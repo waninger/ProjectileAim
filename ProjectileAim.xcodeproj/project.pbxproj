@@ -13,10 +13,30 @@
 		AFAF941D27F3357E002EFFBA /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */; };
 		AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */; };
 		AFAF941F27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */; };
-		AFAF942027F3357E002EFFBA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF93F727F3357B002EFFBA /* ContentView.swift */; };
-		AFAF942127F3357E002EFFBA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF93F727F3357B002EFFBA /* ContentView.swift */; };
 		AFAF942227F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFAF942327F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
+		C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
+		C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
+		C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */; };
+		C32CE83527FD7EFC001D6EDC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */; };
+		C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82427FD7EFC001D6EDC /* ContentView.swift */; };
+		C32CE83727FD7EFC001D6EDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82427FD7EFC001D6EDC /* ContentView.swift */; };
+		C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82527FD7EFC001D6EDC /* ControlView.swift */; };
+		C32CE83927FD7EFC001D6EDC /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82527FD7EFC001D6EDC /* ControlView.swift */; };
+		C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82627FD7EFC001D6EDC /* ErrorView.swift */; };
+		C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82627FD7EFC001D6EDC /* ErrorView.swift */; };
+		C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
+		C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
+		C32CE84027FD7EFC001D6EDC /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* Track.swift */; };
+		C32CE84127FD7EFC001D6EDC /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* Track.swift */; };
+		C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
+		C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
+		C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */; };
+		C32CE84527FD7EFC001D6EDC /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */; };
+		C32CE84627FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
+		C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
+		C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
+		C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +58,6 @@
 
 /* Begin PBXFileReference section */
 		AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileAimApp.swift; sourceTree = "<group>"; };
-		AFAF93F727F3357B002EFFBA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AFAF93F827F3357E002EFFBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFAF93FD27F3357E002EFFBA /* ProjectileAim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectileAim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFAF940327F3357E002EFFBA /* ProjectileAim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectileAim.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +68,17 @@
 		AFAF941627F3357E002EFFBA /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		C32CE82227FD7EFC001D6EDC /* FrameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
+		C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
+		C32CE82427FD7EFC001D6EDC /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C32CE82527FD7EFC001D6EDC /* ControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		C32CE82627FD7EFC001D6EDC /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImageExtension.swift; sourceTree = "<group>"; };
+		C32CE82B27FD7EFC001D6EDC /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		C32CE82D27FD7EFC001D6EDC /* CameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
+		C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
+		C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +127,12 @@
 		AFAF93F527F3357B002EFFBA /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C32CE82C27FD7EFC001D6EDC /* Camera */,
+				C32CE82827FD7EFC001D6EDC /* Extensions */,
+				C32CE83027FD7EFC001D6EDC /* ViewModels */,
+				C32CE82127FD7EFC001D6EDC /* Views */,
+				C32CE82A27FD7EFC001D6EDC /* Vision */,
 				AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */,
-				AFAF93F727F3357B002EFFBA /* ContentView.swift */,
 				AFAF93F827F3357E002EFFBA /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -139,6 +173,52 @@
 				AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */,
 			);
 			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		C32CE82127FD7EFC001D6EDC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C32CE82227FD7EFC001D6EDC /* FrameView.swift */,
+				C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */,
+				C32CE82427FD7EFC001D6EDC /* ContentView.swift */,
+				C32CE82527FD7EFC001D6EDC /* ControlView.swift */,
+				C32CE82627FD7EFC001D6EDC /* ErrorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C32CE82827FD7EFC001D6EDC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C32CE82A27FD7EFC001D6EDC /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				C32CE82B27FD7EFC001D6EDC /* Track.swift */,
+			);
+			path = Vision;
+			sourceTree = "<group>";
+		};
+		C32CE82C27FD7EFC001D6EDC /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				C32CE82D27FD7EFC001D6EDC /* CameraError.swift */,
+				C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */,
+				C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		C32CE83027FD7EFC001D6EDC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,8 +379,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFAF942027F3357E002EFFBA /* ContentView.swift in Sources */,
+				C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */,
+				C32CE84627FD7EFC001D6EDC /* CameraManager.swift in Sources */,
+				C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */,
+				C32CE84027FD7EFC001D6EDC /* Track.swift in Sources */,
+				C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
+				C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
+				C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */,
+				C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
+				C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
+				C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */,
+				C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,8 +398,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFAF942127F3357E002EFFBA /* ContentView.swift in Sources */,
+				C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */,
+				C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */,
+				C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */,
+				C32CE84127FD7EFC001D6EDC /* Track.swift in Sources */,
+				C32CE83727FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				AFAF941F27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
+				C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
+				C32CE84527FD7EFC001D6EDC /* FrameManager.swift in Sources */,
+				C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
+				C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
+				C32CE83927FD7EFC001D6EDC /* ControlView.swift in Sources */,
+				C32CE83527FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,7 +563,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZXG53VSJ5;
+				DEVELOPMENT_TEAM = MBM9A5ZST5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -477,7 +577,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Project.ProjectileAim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.firstApp;
 				PRODUCT_NAME = ProjectileAim;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -493,7 +593,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZXG53VSJ5;
+				DEVELOPMENT_TEAM = MBM9A5ZST5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -507,7 +607,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Project.ProjectileAim;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.firstApp;
 				PRODUCT_NAME = ProjectileAim;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
