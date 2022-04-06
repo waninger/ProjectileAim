@@ -32,6 +32,7 @@
 
 import Foundation
 import SwiftUI
+import Vision
 
 struct FrameView: View {
   
@@ -53,11 +54,26 @@ struct FrameView: View {
             alignment: .center)
           .clipped()
       }
+
     } else {
       // 4
       Color.black
     }
+  }
+}
+struct ParabolaView: View{
+    var points: [VNPoint]?
+    
+    var body: some View{
+        GeometryReader{geometry in
+            let width = min(geometry.size.width, geometry.size.height)
 
-      }
-  
+                Path { path in
+                    points?.forEach { point in
+                        if points?.first == point {path.move(to: CGPoint(x:point.x*width,y:point.y*width))}
+                        path.addLine(to: CGPoint(x:point.x*width, y:point.y*width))
+                    }
+                }.stroke(Color.red)
+            }
+        }
 }

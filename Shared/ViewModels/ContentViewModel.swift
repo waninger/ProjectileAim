@@ -31,6 +31,7 @@
 /// THE SOFTWARE.
 
 import CoreImage
+import Vision
 
 class ContentViewModel: ObservableObject {
   // 1
@@ -53,6 +54,6 @@ class ContentViewModel: ObservableObject {
       }
       // 4
       .assign(to: &$frame)
-
   }
+    
 }

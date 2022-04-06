@@ -32,6 +32,7 @@
 
 import AVFoundation
 import Vision
+import SwiftUI
 // 1
 class FrameManager: NSObject, ObservableObject {
   
@@ -46,6 +47,7 @@ class FrameManager: NSObject, ObservableObject {
   static let shared = FrameManager()
   // 3
   @Published var current: CVPixelBuffer?
+    @Published var parabola: [VNPoint] = []
   // 4
   let videoOutputQueue = DispatchQueue(
     label: "com.raywenderlich.VideoOutputQ",
@@ -59,9 +61,17 @@ class FrameManager: NSObject, ObservableObject {
   }
   
   func completionHandler(request: VNRequest, error: Error?) {
-    guard let observations =
+      var points: [VNPoint] = []
+      guard let observations =
                request.results as? [VNTrajectoryObservation] else { return }
-      print(observations.first?.detectedPoints as Any)
+      observations.first?.detectedPoints.forEach {point in points.append(point)
+          print(point)
+      }
+      if !observations.isEmpty{
+          DispatchQueue.main.async {
+              self.parabola = points
+          }
+      }
   }
 }
 
