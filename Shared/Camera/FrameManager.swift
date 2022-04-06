@@ -61,7 +61,7 @@ class FrameManager: NSObject, ObservableObject {
   func completionHandler(request: VNRequest, error: Error?) {
     guard let observations =
                request.results as? [VNTrajectoryObservation] else { return }
-    print(observations.first?.detectedPoints)
+      print(observations.first?.detectedPoints as Any)
   }
 }
 
