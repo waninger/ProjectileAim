@@ -17,8 +17,6 @@
 		AFAF942127F3357E002EFFBA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF93F727F3357B002EFFBA /* ContentView.swift */; };
 		AFAF942227F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFAF942327F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
-		AFAF943327F3370A002EFFBA /* Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF943227F3370A002EFFBA /* Depth.swift */; };
-		AFAF943427F3370A002EFFBA /* Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF943227F3370A002EFFBA /* Depth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +49,6 @@
 		AFAF941627F3357E002EFFBA /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		AFAF943227F3370A002EFFBA /* Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Depth.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +100,6 @@
 				AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */,
 				AFAF93F727F3357B002EFFBA /* ContentView.swift */,
 				AFAF93F827F3357E002EFFBA /* Assets.xcassets */,
-				AFAF943227F3370A002EFFBA /* Depth.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -305,7 +301,6 @@
 			files = (
 				AFAF942027F3357E002EFFBA /* ContentView.swift in Sources */,
 				AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
-				AFAF943327F3370A002EFFBA /* Depth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,7 +310,6 @@
 			files = (
 				AFAF942127F3357E002EFFBA /* ContentView.swift in Sources */,
 				AFAF941F27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
-				AFAF943427F3370A002EFFBA /* Depth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
