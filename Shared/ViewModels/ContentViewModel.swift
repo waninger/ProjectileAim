@@ -40,22 +40,21 @@ class ContentViewModel: ObservableObject {
   // 2
     //private let frameManager = FrameManager.shared
     private let data = CameraData.shared
-    private let trackParabola = TrackParabola()
+    //private let trackParabola = TrackParabola()
 
   init() {
-    data.setParabolaTracker(trackParabola: trackParabola)
     setupSubscriptions()
   }
   func setupSubscriptions() {
       
-    data.$currentFrame
+      data.$currentFrame
       .receive(on: RunLoop.main)
       .compactMap { buffer in
         return CGImage.create(from: buffer)
       }
       .assign(to: &$frame)
       
-    trackParabola.$parabola
+      data.$parabola
           .receive(on:RunLoop.main)
           .assign(to: &$parabola)
   }

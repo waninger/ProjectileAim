@@ -47,7 +47,7 @@ class FrameManager: NSObject, ObservableObject {
   static let shared = FrameManager()
   // 3
   @Published var current: CVPixelBuffer?
-    @Published var parabola: [VNPoint] = []
+    @Published var parabola: [VNPoint]?
   // 4
   let videoOutputQueue = DispatchQueue(
     label: "com.raywenderlich.VideoOutputQ",
@@ -89,7 +89,6 @@ extension FrameManager: AVCaptureVideoDataOutputSampleBufferDelegate {
         let requestHandler = VNImageRequestHandler(cmSampleBuffer: sampleBuffer)
         try requestHandler.perform([request])
       } catch {
-        
       }
     }
   }

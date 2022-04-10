@@ -55,7 +55,7 @@ class TrackParabola:NSObject, ObservableObject{
               let requestHandler = VNImageRequestHandler(cvPixelBuffer: frame!)
                 try requestHandler.perform([request])
             } catch {
-                print(error)
+                //print(error)
             }
           }
     }
