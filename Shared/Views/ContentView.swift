@@ -35,11 +35,10 @@ import SwiftUI
 struct ContentView: View {
   
   @StateObject private var model = ContentViewModel()
-    @StateObject private var frame = FrameManager.shared
 
   var body: some View {
       FrameView(image: model.frame)
-      ParabolaView(points: frame.parabola)
+      ParabolaView(points: model.parabola)
       .edgesIgnoringSafeArea(.all)
   }
 }

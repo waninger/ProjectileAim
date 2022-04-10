@@ -33,3 +33,45 @@
 import Foundation
 import SwiftUI
 import Vision
+import ARKit
+
+class TrackParabola:NSObject, ObservableObject{
+    
+    @Published var parabola: [VNPoint]?
+    var camera = CameraData.shared
+    var frame:CVPixelBuffer?
+
+    private lazy var request: VNDetectTrajectoriesRequest = {
+      return VNDetectTrajectoriesRequest(frameAnalysisSpacing: .zero,
+                                         trajectoryLength: 15,
+                                         completionHandler: completionHandler)
+    }()
+
+
+    func reciveFrame(frame:CVPixelBuffer?){
+        print("recived frame")
+        if frame != nil{
+            do {
+              let requestHandler = VNImageRequestHandler(cvPixelBuffer: frame!)
+                try requestHandler.perform([request])
+            } catch {
+                print(error)
+            }
+          }
+    }
+    
+    //extract parabola points and publish
+    func completionHandler(request: VNRequest, error: Error?) {
+        var points: [VNPoint] = []
+        guard let observations = request.results as? [VNTrajectoryObservation] else { return }
+        observations.first?.detectedPoints.forEach {point in points.append(point)}
+        if !observations.isEmpty{
+            DispatchQueue.main.async {
+                self.parabola = points
+            }
+        }
+    }
+    
+}
+
+

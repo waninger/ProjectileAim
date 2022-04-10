@@ -33,6 +33,7 @@
 import Foundation
 import SwiftUI
 import Vision
+import ARKit
 
 struct FrameView: View {
   
@@ -68,12 +69,12 @@ struct ParabolaView: View{
         GeometryReader{geometry in
             let width = min(geometry.size.width, geometry.size.height)
 
-                Path { path in
-                    points?.forEach { point in
-                        if points?.first == point {path.move(to: CGPoint(x:point.x*width,y:point.y*width))}
-                        path.addLine(to: CGPoint(x:point.x*width, y:point.y*width))
-                    }
-                }.stroke(Color.red)
-            }
+            Path { path in
+                points?.forEach { point in
+                    if points?.first == point {path.move(to: CGPoint(x:point.x*width,y:point.y*width))}
+                    path.addLine(to: CGPoint(x:point.x*width, y:point.y*width))
+                }
+            }.stroke(Color.red)
         }
+    }
 }

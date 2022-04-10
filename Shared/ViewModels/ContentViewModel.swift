@@ -36,24 +36,27 @@ import Vision
 class ContentViewModel: ObservableObject {
   // 1
   @Published var frame: CGImage?
+    @Published var parabola:[VNPoint]?
   // 2
-  private let frameManager = FrameManager.shared
+    //private let frameManager = FrameManager.shared
+    private let data = CameraData.shared
+    private let trackParabola = TrackParabola()
 
   init() {
+    data.setParabolaTracker(trackParabola: trackParabola)
     setupSubscriptions()
   }
-  // 3
   func setupSubscriptions() {
-    // 1
-    frameManager.$current
-      // 2
+      
+    data.$currentFrame
       .receive(on: RunLoop.main)
-      // 3
       .compactMap { buffer in
         return CGImage.create(from: buffer)
       }
-      // 4
       .assign(to: &$frame)
+      
+    trackParabola.$parabola
+          .receive(on:RunLoop.main)
+          .assign(to: &$parabola)
   }
-    
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF93960427FDD5310086B95A /* CameraData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF93960327FDD5310086B95A /* CameraData.swift */; };
 		AFAF940F27F3357E002EFFBA /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF940E27F3357E002EFFBA /* Tests_iOS.swift */; };
 		AFAF941127F3357E002EFFBA /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF941027F3357E002EFFBA /* Tests_iOSLaunchTests.swift */; };
 		AFAF941B27F3357E002EFFBA /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */; };
@@ -27,8 +28,8 @@
 		C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82627FD7EFC001D6EDC /* ErrorView.swift */; };
 		C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
 		C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
-		C32CE84027FD7EFC001D6EDC /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* Track.swift */; };
-		C32CE84127FD7EFC001D6EDC /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* Track.swift */; };
+		C32CE84027FD7EFC001D6EDC /* TrackParabola.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */; };
+		C32CE84127FD7EFC001D6EDC /* TrackParabola.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */; };
 		C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
 		C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
 		C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */; };
@@ -57,6 +58,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AF93960327FDD5310086B95A /* CameraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraData.swift; sourceTree = "<group>"; };
 		AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileAimApp.swift; sourceTree = "<group>"; };
 		AFAF93F827F3357E002EFFBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFAF93FD27F3357E002EFFBA /* ProjectileAim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectileAim.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,7 +76,7 @@
 		C32CE82527FD7EFC001D6EDC /* ControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		C32CE82627FD7EFC001D6EDC /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImageExtension.swift; sourceTree = "<group>"; };
-		C32CE82B27FD7EFC001D6EDC /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackParabola.swift; sourceTree = "<group>"; };
 		C32CE82D27FD7EFC001D6EDC /* CameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
 		C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
 		C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
@@ -113,6 +115,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF93960227FDD50E0086B95A /* Depth */ = {
+			isa = PBXGroup;
+			children = (
+				AF93960327FDD5310086B95A /* CameraData.swift */,
+			);
+			path = Depth;
+			sourceTree = "<group>";
+		};
 		AFAF93F027F3357B002EFFBA = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 		AFAF93F527F3357B002EFFBA /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AF93960227FDD50E0086B95A /* Depth */,
 				C32CE82C27FD7EFC001D6EDC /* Camera */,
 				C32CE82827FD7EFC001D6EDC /* Extensions */,
 				C32CE83027FD7EFC001D6EDC /* ViewModels */,
@@ -198,7 +209,7 @@
 		C32CE82A27FD7EFC001D6EDC /* Vision */ = {
 			isa = PBXGroup;
 			children = (
-				C32CE82B27FD7EFC001D6EDC /* Track.swift */,
+				C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */,
 			);
 			path = Vision;
 			sourceTree = "<group>";
@@ -382,11 +393,12 @@
 				C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */,
 				C32CE84627FD7EFC001D6EDC /* CameraManager.swift in Sources */,
 				C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */,
-				C32CE84027FD7EFC001D6EDC /* Track.swift in Sources */,
+				C32CE84027FD7EFC001D6EDC /* TrackParabola.swift in Sources */,
 				C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
 				C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
 				C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */,
+				AF93960427FDD5310086B95A /* CameraData.swift in Sources */,
 				C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
 				C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
 				C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */,
@@ -401,7 +413,7 @@
 				C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */,
 				C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */,
 				C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */,
-				C32CE84127FD7EFC001D6EDC /* Track.swift in Sources */,
+				C32CE84127FD7EFC001D6EDC /* TrackParabola.swift in Sources */,
 				C32CE83727FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				AFAF941F27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
 				C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
