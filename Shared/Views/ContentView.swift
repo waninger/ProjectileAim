@@ -31,15 +31,34 @@
 /// THE SOFTWARE.
 
 import SwiftUI
+import RealityKit
+import ARKit
+
+struct RealityKitView: UIViewRepresentable {
+    @StateObject private var model = ContentViewModel()
+
+    func makeUIView(context: Context) -> ARView {
+       let view = ARView()
+        let session = model.session
+        
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        coachingOverlay.session = session
+        coachingOverlay.goal = .horizontalPlane
+        view.addSubview(coachingOverlay)
+        
+       return view
+    }
+
+    func updateUIView(_ view: ARView, context: Context) {
+    }
+}
+
 
 struct ContentView: View {
-  
-  @StateObject private var model = ContentViewModel()
-
   var body: some View {
-      FrameView(image: model.frame)
-      //ParabolaView(points: model.parabola)
-      .edgesIgnoringSafeArea(.all)
+      RealityKitView()
+          .ignoresSafeArea()
   }
 }
 

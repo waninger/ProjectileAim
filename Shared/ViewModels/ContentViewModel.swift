@@ -32,11 +32,12 @@
 
 import CoreImage
 import Vision
+import ARKit
 
 class ContentViewModel: ObservableObject {
   // 1
   @Published var frame: CGImage?
-    @Published var parabola:[VNPoint]?
+    @Published var session: ARSession?
   // 2
     //private let frameManager = FrameManager.shared
     private let data = CameraData.shared
@@ -53,5 +54,11 @@ class ContentViewModel: ObservableObject {
         return CGImage.create(from: buffer)
       }
       .assign(to: &$frame)
+      
+      data.$session
+          .receive(on: RunLoop.main)
+          .compactMap {ses in
+              return ses}
+          .assign(to: &$session)
   }
 }

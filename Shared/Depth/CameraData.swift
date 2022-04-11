@@ -11,9 +11,9 @@ import Vision
 
 //singelton
 class CameraData:NSObject, ARSessionDelegate{
-    let session = ARSession()
     let config = ARWorldTrackingConfiguration()
-        
+    
+    @Published var session = ARSession()
     @Published var currentFrame: CVPixelBuffer?
     
     static let shared = CameraData()
@@ -21,13 +21,25 @@ class CameraData:NSObject, ARSessionDelegate{
     private override init(){
         super.init()
         session.delegate=self
+        configSetup()
         session.run(config)
         print("initialized")
+    }
+    func configSetup(){
+        config.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.currentFrame = frame.capturedImage
-        print(frame.capturedDepthDataTimestamp)
+        print(frame.anchors)
+        CVPixelBufferLockBaseAddress(frame.sceneDepth!.depthMap, .readOnly)
+        var a = CVPixelBufferGetBaseAddress(frame.sceneDepth!.depthMap)
+        print(a)
+        print(a?.load(as: Float32.self))
+        a=a?.advanced(by: 24576)
+        print(a)
+        print(a?.load(as: Float32.self))
+        //print(frame.sceneDepth!.depthMap)
     }
     
 }
