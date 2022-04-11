@@ -27,7 +27,7 @@ class CameraData:NSObject, ARSessionDelegate{
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.currentFrame = frame.capturedImage
-
+        print(frame.capturedDepthDataTimestamp)
     }
     
 }

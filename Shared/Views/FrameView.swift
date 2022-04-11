@@ -62,6 +62,7 @@ struct FrameView: View {
     }
   }
 }
+
 struct ParabolaView: View{
     var points: [VNPoint]?
     
@@ -78,3 +79,4 @@ struct ParabolaView: View{
         }
     }
 }
+
