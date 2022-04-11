@@ -47,19 +47,20 @@ class TrackParabola:NSObject, ObservableObject{
                                          completionHandler: completionHandler)
     }()
 
-
+/*
     func reciveFrame(frame:CVPixelBuffer?){
         print("recived frame")
         if frame != nil{
+            let buf = createSampleBufferFrom(pixelBuffer: frame!)
+            print(buf?.presentationTimeStamp as Any)
+            let requestHandler = VNImageRequestHandler(cmSampleBuffer: buf!)
             do {
-              let requestHandler = VNImageRequestHandler(cvPixelBuffer: frame!)
                 try requestHandler.perform([request])
             } catch {
-                //print(error)
             }
           }
     }
-    
+*/
     //extract parabola points and publish
     func completionHandler(request: VNRequest, error: Error?) {
         var points: [VNPoint] = []
@@ -70,6 +71,32 @@ class TrackParabola:NSObject, ObservableObject{
                 self.parabola = points
             }
         }
+    }
+    func createSampleBufferFrom(pixelBuffer: CVPixelBuffer, time:TimeInterval) -> CMSampleBuffer? {
+        var sampleBuffer: CMSampleBuffer?
+        
+        let timestamp = CMTime()
+        print(timestamp)
+            
+        var timimgInfo  = CMSampleTimingInfo(duration: timestamp, presentationTimeStamp: timestamp, decodeTimeStamp: timestamp)
+        
+        
+        var formatDescription: CMFormatDescription? = nil
+        CMVideoFormatDescriptionCreateForImageBuffer(allocator: kCFAllocatorDefault, imageBuffer: pixelBuffer, formatDescriptionOut: &formatDescription)
+        CMSampleBufferCreateReadyWithImageBuffer(
+              allocator: kCFAllocatorDefault,
+              imageBuffer: pixelBuffer,
+              formatDescription: formatDescription!,
+              sampleTiming: &timimgInfo,
+              sampleBufferOut: &sampleBuffer
+            )
+            
+        guard let buffer = sampleBuffer else {
+             print("Cannot create sample buffer")
+             return nil
+           }
+           
+        return buffer
     }
     
 }

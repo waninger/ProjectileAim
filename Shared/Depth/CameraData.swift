@@ -15,23 +15,6 @@ class CameraData:NSObject, ARSessionDelegate{
     let config = ARWorldTrackingConfiguration()
         
     @Published var currentFrame: CVPixelBuffer?
-    @Published var parabola: [VNPoint]?
-    
-    private lazy var request: VNDetectTrajectoriesRequest = {
-      return VNDetectTrajectoriesRequest(frameAnalysisSpacing: .zero,
-                                         trajectoryLength: 15,
-                                         completionHandler: completionHandler)
-    }()
-    func completionHandler(request: VNRequest, error: Error?) {
-        var points: [VNPoint] = []
-        guard let observations = request.results as? [VNTrajectoryObservation] else { return }
-        observations.first?.detectedPoints.forEach {point in points.append(point)}
-        if !observations.isEmpty{
-            DispatchQueue.main.async {
-                self.parabola = points
-            }
-        }
-    }
     
     static let shared = CameraData()
     
@@ -41,16 +24,10 @@ class CameraData:NSObject, ARSessionDelegate{
         session.run(config)
         print("initialized")
     }
+
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.currentFrame = frame.capturedImage
-        if currentFrame != nil{
-            let requestHandler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
-            do {
-                try requestHandler.perform([request])
-            } catch {
-                print(error)
-            }
-          }
+
     }
     
 }

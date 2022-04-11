@@ -53,9 +53,5 @@ class ContentViewModel: ObservableObject {
         return CGImage.create(from: buffer)
       }
       .assign(to: &$frame)
-      
-      data.$parabola
-          .receive(on:RunLoop.main)
-          .assign(to: &$parabola)
   }
 }
