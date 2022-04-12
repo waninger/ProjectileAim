@@ -31,29 +31,30 @@ class CameraData:NSObject, ARSessionDelegate{
     private func setupObjectDetection() {
 
       guard let referenceObjects = ARReferenceObject.referenceObjects(
-        inGroupNamed: "AR Resources", bundle: nil) else {
+        inGroupNamed: "AR", bundle: nil) else {
           fatalError("Missing expected asset catalog resources.")
       }
 
         worldConfiguration.detectionObjects = referenceObjects
 
-      guard let referenceImages = ARReferenceImage.referenceImages(
-        inGroupNamed: "AR Resources", bundle: nil) else {
-          fatalError("Missing expected asset catalog resources.")
-      }
-        worldConfiguration.detectionImages = referenceImages
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print(frame.anchors)
+
         currentFrame.self = frame.capturedImage
         
-        if let objectAnchor = frame.anchors.first as? ARObjectAnchor {
-          handleFoundObject(imageAnchor, node)
+        for anchor in frame.anchors {
+            print(anchor)
+            
+        }
+        
+        if let objectAnchor = frame.anchors as? ARObjectAnchor {
+         
+            
+            // handleFoundObject(imageAnchor, node)
         } else {
          
         }
     }
     
-    func handleFoundObject
 }
