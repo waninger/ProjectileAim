@@ -38,7 +38,8 @@ struct ContentView: View {
 
   var body: some View {
       FrameView(image: model.frame)
-      ParabolaView(points: model.parabola)
+      
+     // ParabolaView(points: model.parabola)
       .edgesIgnoringSafeArea(.all)
   }
 }

@@ -43,9 +43,10 @@ class ContentViewModel: ObservableObject {
     //private let trackParabola = TrackParabola()
 
   init() {
-    setupSubscriptions()
+     setupSubscriptions()
   }
-  func setupSubscriptions() {
+  
+    func setupSubscriptions() {
       
       data.$currentFrame
       .receive(on: RunLoop.main)
