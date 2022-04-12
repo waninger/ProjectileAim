@@ -9,52 +9,36 @@ import Foundation
 import ARKit
 import Vision
 
-//singelton
 class CameraData:NSObject, ARSessionDelegate{
-    // Add configuration variables here:
-    let session = ARSession()
-    private var worldConfiguration = ARWorldTrackingConfiguration()
-    
-    @Published var currentFrame: CVPixelBuffer?
-    
     static let shared = CameraData()
     
     private override init() {
         super.init()
-        setupObjectDetection()
-        session.delegate = self
-        session.run(worldConfiguration)
     }
 
-    // MARK: - Configuration functions to fill out
 
-    private func setupObjectDetection() {
-
-      guard let referenceObjects = ARReferenceObject.referenceObjects(
-        inGroupNamed: "AR", bundle: nil) else {
-          fatalError("Missing expected asset catalog resources.")
-      }
-
-        worldConfiguration.detectionObjects = referenceObjects
-
-    }
-    
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-
-        currentFrame.self = frame.capturedImage
-        
+        //frame.camera.transform.columns.
+ 
         for anchor in frame.anchors {
-            print(anchor)
+            print(anchor.name , anchor.transform.columns.3)
             
         }
+   
         
-        if let objectAnchor = frame.anchors as? ARObjectAnchor {
-         
-            
-            // handleFoundObject(imageAnchor, node)
-        } else {
-         
-        }
+       // print(frame.camera.transform.columns.0,"x")
+        //print(frame.camera.transform.columns.1,"y")
+        //print(frame.camera.transform.columns.2,"z")
+
+        //print(frame.sceneDepth!.depthMap)
     }
-    
+
+        
+        func calculateDistance(frame:ARFrame?){
+            if frame != nil{
+                frame?.anchors.forEach { frame in
+                    //sqrt(())
+                }
+            }
+        }
 }
