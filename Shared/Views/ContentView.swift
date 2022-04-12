@@ -48,6 +48,7 @@ struct RealityKitView: UIViewRepresentable {
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
+        session.run(worldConfiguration)
        return view
     }
 

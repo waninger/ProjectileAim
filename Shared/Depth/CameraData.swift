@@ -17,21 +17,22 @@ class CameraData:NSObject, ARSessionDelegate{
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        //frame.camera.transform.columns.
-        print(frame.camera)
-        print(frame.camera.transform.columns.0,"x")
-        print(frame.camera.transform.columns.1,"y")
-        print(frame.camera.transform.columns.2,"z")
-
+        calculateDistance(frame: frame)
         //print(frame.sceneDepth!.depthMap)
     }
 
         
-        func calculateDistance(frame:ARFrame?){
-            if frame != nil{
-                frame?.anchors.forEach { frame in
-                    //sqrt(())
-                }
-            }
+    func calculateDistance(frame:ARFrame){
+        let cx = frame.camera.transform.columns.3[0]
+        let cy = frame.camera.transform.columns.3[1]
+        let cz = frame.camera.transform.columns.3[2]
+        frame.anchors.forEach { anchor in
+            let ax = anchor.transform.columns.3[0]
+            let ay = anchor.transform.columns.3[1]
+            let az = anchor.transform.columns.3[2]
+            let distance = sqrt(pow(ax-cx,2)+pow(ay-cy,2)+pow(az-cz,2))
+            print(distance,"for anchor",anchor.identifier)
         }
+    }
 }
+
