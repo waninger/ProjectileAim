@@ -35,23 +35,41 @@ import RealityKit
 import ARKit
 
 struct RealityKitView: UIViewRepresentable {
-    @StateObject private var model = ContentViewModel()
+    private var worldConfiguration = ARWorldTrackingConfiguration()
 
     func makeUIView(context: Context) -> ARView {
-       let view = ARView()
-        let session = model.session
+        setupObjectDetection()
         
+        let view = ARView()
+        let session = view.session
+        session.delegate = CameraData.shared
         let coachingOverlay = ARCoachingOverlayView()
         coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
-        
        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
     }
+    
+    private func setupObjectDetection() {
+      guard let referenceObjects = ARReferenceObject.referenceObjects(
+        inGroupNamed: "AR Resources", bundle: nil) else {
+          fatalError("Missing expected asset catalog resources.")
+      }
+
+        worldConfiguration.detectionObjects = referenceObjects
+
+      guard let referenceImages = ARReferenceImage.referenceImages(
+        inGroupNamed: "AR Resources", bundle: nil) else {
+          fatalError("Missing expected asset catalog resources.")
+      }
+        worldConfiguration.detectionImages = referenceImages
+        worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
+    }
+
 }
 
 

@@ -48,18 +48,6 @@ class ContentViewModel: ObservableObject {
   }
   
     func setupSubscriptions() {
-      
-      data.$currentFrame
-      .receive(on: RunLoop.main)
-      .compactMap { buffer in
-        return CGImage.create(from: buffer)
-      }
-      .assign(to: &$frame)
-      
-      data.$session
-          .receive(on: RunLoop.main)
-          .compactMap {ses in
-              return ses}
-          .assign(to: &$session)
+
   }
 }
