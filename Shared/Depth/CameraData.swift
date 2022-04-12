@@ -11,35 +11,45 @@ import Vision
 
 //singelton
 class CameraData:NSObject, ARSessionDelegate{
-    let config = ARWorldTrackingConfiguration()
+    // Add configuration variables here:
     
+    private var worldConfiguration = ARWorldTrackingConfiguration()
     @Published var session = ARSession()
     @Published var currentFrame: CVPixelBuffer?
     
     static let shared = CameraData()
     
-    private override init(){
+    private override init() {
         super.init()
-        session.delegate=self
-        configSetup()
-        session.run(config)
-        print("initialized")
-    }
-    func configSetup(){
-        config.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
+        setupObjectDetection()
+        session.delegate = self
+        session.run(worldConfiguration)
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.currentFrame = frame.capturedImage
         print(frame.anchors)
-        CVPixelBufferLockBaseAddress(frame.sceneDepth!.depthMap, .readOnly)
-        var a = CVPixelBufferGetBaseAddress(frame.sceneDepth!.depthMap)
-        print(a)
-        print(a?.load(as: Float32.self))
-        a=a?.advanced(by: 24576)
-        print(a)
-        print(a?.load(as: Float32.self))
+        if let objectAnchor = frame.anchors.first as? ARObjectAnchor {
+        } else {
+         
+        }
         //print(frame.sceneDepth!.depthMap)
     }
-    
+    private func setupObjectDetection() {
+
+      guard let referenceObjects = ARReferenceObject.referenceObjects(
+        inGroupNamed: "AR Resources", bundle: nil) else {
+          fatalError("Missing expected asset catalog resources.")
+      }
+
+        worldConfiguration.detectionObjects = referenceObjects
+
+      guard let referenceImages = ARReferenceImage.referenceImages(
+        inGroupNamed: "AR Resources", bundle: nil) else {
+          fatalError("Missing expected asset catalog resources.")
+      }
+        worldConfiguration.detectionImages = referenceImages
+        worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
+
+    }
 }
