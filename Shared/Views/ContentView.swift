@@ -48,6 +48,7 @@ struct RealityKitView: UIViewRepresentable {
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
+        session.run(worldConfiguration)
        return view
     }
 
@@ -56,17 +57,12 @@ struct RealityKitView: UIViewRepresentable {
     
     private func setupObjectDetection() {
       guard let referenceObjects = ARReferenceObject.referenceObjects(
-        inGroupNamed: "AR Resources", bundle: nil) else {
+        inGroupNamed: "AR", bundle: nil) else {
           fatalError("Missing expected asset catalog resources.")
       }
 
         worldConfiguration.detectionObjects = referenceObjects
 
-      guard let referenceImages = ARReferenceImage.referenceImages(
-        inGroupNamed: "AR Resources", bundle: nil) else {
-          fatalError("Missing expected asset catalog resources.")
-      }
-        worldConfiguration.detectionImages = referenceImages
         worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
     }
 
