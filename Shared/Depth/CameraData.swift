@@ -7,18 +7,21 @@
 
 import Foundation
 import ARKit
-import Vision
 
-class CameraData:NSObject, ARSessionDelegate{
+
+class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
+    var anchors = [ARAnchor]()
     
     private override init() {
         super.init()
     }
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if frame.anchors.count > anchors.count{
+            anchors = frame.anchors
+        }
         calculateDistance(frame: frame)
-        //print(frame.sceneDepth!.depthMap)
     }
 
         

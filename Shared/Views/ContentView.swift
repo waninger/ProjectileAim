@@ -36,18 +36,27 @@ import ARKit
 
 struct RealityKitView: UIViewRepresentable {
     private var worldConfiguration = ARWorldTrackingConfiguration()
+    @StateObject var cameraData = CameraData.shared
 
     func makeUIView(context: Context) -> ARView {
         setupObjectDetection()
         
         let view = ARView()
         let session = view.session
-        session.delegate = CameraData.shared
+        session.delegate = cameraData
+        
+        
         let coachingOverlay = ARCoachingOverlayView()
         coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
+        
+        cameraData.anchors.forEach{ anchor in
+            let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
+            view.scene.addAnchor(anc)
+        }
+        
         session.run(worldConfiguration)
        return view
     }
