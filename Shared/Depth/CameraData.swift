@@ -17,9 +17,15 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         super.init()
     }
 
+
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+
         if frame.anchors.count > anchors.count{
             anchors = frame.anchors
+        }
+        for anchor in frame.anchors {
+            print(anchor.name , anchor.transform.columns.3)
+            
         }
         calculateDistance(frame: frame)
     }
