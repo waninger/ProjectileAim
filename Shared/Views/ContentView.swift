@@ -56,12 +56,23 @@ struct RealityKitView: UIViewRepresentable {
             let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
             view.scene.addAnchor(anc)
         }
-        
-        session.run(worldConfiguration)
+        cameraData.boundingBox.forEach { box in
+            let box = CreatAnchorEntity.CreateBoundingbox(transform: box)
+            view.scene.addAnchor(box)
+        }
        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
+        cameraData.anchors.forEach{ anchor in
+            let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
+            print(view.project(anc.position))
+            view.scene.addAnchor(anc)
+        }
+        cameraData.boundingBox.forEach{box in
+            let box = CreatAnchorEntity.CreateBoundingbox(transform: box)
+            view.scene.addAnchor(box)
+        }
     }
     
     private func setupObjectDetection() {
@@ -71,7 +82,6 @@ struct RealityKitView: UIViewRepresentable {
       }
 
         worldConfiguration.detectionObjects = referenceObjects
-
         worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
     }
 

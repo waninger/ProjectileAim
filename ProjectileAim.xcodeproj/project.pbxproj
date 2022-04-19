@@ -12,6 +12,8 @@
 		AFA0C1AD2806A966003EB8D7 /* TrackObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA0C1AB2806A966003EB8D7 /* TrackObject.swift */; };
 		AFA0C1AF2806B240003EB8D7 /* AnchorEntitys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA0C1AE2806B240003EB8D7 /* AnchorEntitys.swift */; };
 		AFA0C1B02806B240003EB8D7 /* AnchorEntitys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA0C1AE2806B240003EB8D7 /* AnchorEntitys.swift */; };
+		AFA0C1B22806E897003EB8D7 /* BoundingBoxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA0C1B12806E897003EB8D7 /* BoundingBoxes.swift */; };
+		AFA0C1B32806E897003EB8D7 /* BoundingBoxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA0C1B12806E897003EB8D7 /* BoundingBoxes.swift */; };
 		AFAF940F27F3357E002EFFBA /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF940E27F3357E002EFFBA /* Tests_iOS.swift */; };
 		AFAF941127F3357E002EFFBA /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF941027F3357E002EFFBA /* Tests_iOSLaunchTests.swift */; };
 		AFAF941B27F3357E002EFFBA /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */; };
@@ -65,6 +67,7 @@
 		AF93960327FDD5310086B95A /* CameraData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraData.swift; sourceTree = "<group>"; };
 		AFA0C1AB2806A966003EB8D7 /* TrackObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackObject.swift; sourceTree = "<group>"; };
 		AFA0C1AE2806B240003EB8D7 /* AnchorEntitys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorEntitys.swift; sourceTree = "<group>"; };
+		AFA0C1B12806E897003EB8D7 /* BoundingBoxes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxes.swift; sourceTree = "<group>"; };
 		AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileAimApp.swift; sourceTree = "<group>"; };
 		AFAF93F827F3357E002EFFBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFAF93FD27F3357E002EFFBA /* ProjectileAim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectileAim.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +204,7 @@
 				C32CE82527FD7EFC001D6EDC /* ControlView.swift */,
 				C32CE82627FD7EFC001D6EDC /* ErrorView.swift */,
 				AFA0C1AE2806B240003EB8D7 /* AnchorEntitys.swift */,
+				AFA0C1B12806E897003EB8D7 /* BoundingBoxes.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -413,6 +417,7 @@
 				C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
 				C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */,
 				C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
+				AFA0C1B22806E897003EB8D7 /* BoundingBoxes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +437,7 @@
 				C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
 				C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
 				C32CE83927FD7EFC001D6EDC /* ControlView.swift in Sources */,
+				AFA0C1B32806E897003EB8D7 /* BoundingBoxes.swift in Sources */,
 				C32CE83527FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 				AFA0C1B02806B240003EB8D7 /* AnchorEntitys.swift in Sources */,
 			);
@@ -587,7 +593,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MBM9A5ZST5;
+				DEVELOPMENT_TEAM = FZXG53VSJ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
@@ -602,7 +608,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.secondApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.firstApp;
 				PRODUCT_NAME = ProjectileAim;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -618,7 +624,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MBM9A5ZST5;
+				DEVELOPMENT_TEAM = FZXG53VSJ5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
@@ -633,7 +639,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.secondApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sofiarothman.firstApp;
 				PRODUCT_NAME = ProjectileAim;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;

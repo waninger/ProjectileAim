@@ -38,7 +38,6 @@ import ARKit
 class TrackParabola:NSObject, ObservableObject{
     
     @Published var parabola: [VNPoint]?
-    var camera = CameraData.shared
     var frame:CVPixelBuffer?
 
     private lazy var request: VNDetectTrajectoriesRequest = {
