@@ -12,8 +12,9 @@ import ARKit
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     @Published var anchors = [ARAnchor]()
-    @Published var boundingBox = [simd_float4x4]()
+    @Published var boundingBox:ARAnchor?
     private let trackObject = TrackObject()
+    var objectsFound = false
     
     private override init() {
         super.init()
@@ -21,24 +22,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
 
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if frame.anchors.count > anchors.count{
-            anchors = frame.anchors
-        }
-        trackObject.TrackObject(buffer: frame.capturedImage)
-        calculateDistance(frame: frame)
-        
-        if trackObject.results?.first != nil && frame.sceneDepth?.depthMap != nil {
-            boundingBox = [simd_float4x4]()
-            trackObject.results?.forEach{ result in
-                anchors.forEach{ anchor in
-                }
-                /*
-                if result.uuid.uuidString not in
-                anchors.append(ARAnchor())
-                boundingBox.append( CreateTransform(frameIn: frame))
-                 */
-            }
-        }
+        print(frame.anchors)
     }
 
     func CreateTransform(frameIn:ARFrame)->simd_float4x4{
@@ -61,7 +45,11 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         //print(transform)
         return transform
     }
-        
+    
+    func createAnchor(frame:ARFrame)->ARAnchor{
+        let anchor = ARAnchor(transform: CreateTransform(frameIn: frame))
+        return anchor
+    }
     func calculateDistance(frame:ARFrame){
         let cx = frame.camera.transform.columns.3[0]
         let cy = frame.camera.transform.columns.3[1]

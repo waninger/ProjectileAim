@@ -54,11 +54,8 @@ struct RealityKitView: UIViewRepresentable {
         
         cameraData.anchors.forEach{ anchor in
             let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
+            print("initial setup")
             view.scene.addAnchor(anc)
-        }
-        cameraData.boundingBox.forEach { box in
-            let box = CreatAnchorEntity.CreateBoundingbox(transform: box)
-            view.scene.addAnchor(box)
         }
        return view
     }
@@ -69,9 +66,10 @@ struct RealityKitView: UIViewRepresentable {
             print(view.project(anc.position))
             view.scene.addAnchor(anc)
         }
-        cameraData.boundingBox.forEach{box in
-            let box = CreatAnchorEntity.CreateBoundingbox(transform: box)
-            view.scene.addAnchor(box)
+        let box = cameraData.boundingBox
+        if(box != nil){
+            print("adding bounding box")
+            view.scene.addAnchor(CreatAnchorEntity.CreateBoundingbox(anchor: box!))
         }
     }
     

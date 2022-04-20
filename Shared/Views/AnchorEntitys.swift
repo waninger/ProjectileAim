@@ -35,8 +35,9 @@ class CreatAnchorEntity{
         }
         return entity
     }
-    static func CreateBoundingbox(transform: simd_float4x4)->AnchorEntity{
-        let entity = AnchorEntity(world: transform)
+    static func CreateBoundingbox(anchor:ARAnchor)->AnchorEntity{
+        
+        let entity = AnchorEntity(anchor: anchor)
         
         let box = MeshResource.generateBox(size: 0.2, cornerRadius: 0.05)
         let material = SimpleMaterial(color: .blue, isMetallic: true)
@@ -45,6 +46,4 @@ class CreatAnchorEntity{
         print(entity.transform, entity.name)
         return entity
     }
-    
-
 }

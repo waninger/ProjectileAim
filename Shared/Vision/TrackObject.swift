@@ -18,26 +18,28 @@ class TrackObject{
 
     
     func setObservationRect(rect:CGRect){
-        observation = VNDetectedObjectObservation(boundingBox: rect)
+        if rect.minX>0 && rect.maxX<1420 && rect.minY>0 && rect.maxY>1920{
+            observation = VNDetectedObjectObservation(boundingBox: rect)
+        }
     }
 
     func TrackObject(buffer:CVPixelBuffer){
-        
-        var requests = [VNRequest]()
-        lazy var request: VNTrackingRequest = {
-            let trackingRequest = VNTrackObjectRequest(detectedObjectObservation: observation!)
-            return trackingRequest
-        }()
-        requests.append(request)
-        
-        do {
-            try requestHandler.perform(requests, on: buffer)
-            } catch {
-                print(error)
+        if observation != nil{
+            var requests = [VNRequest]()
+            lazy var request: VNTrackingRequest = {
+                let trackingRequest = VNTrackObjectRequest(detectedObjectObservation: observation!)
+                return trackingRequest
+            }()
+            requests.append(request)
+            
+            do {
+                try requestHandler.perform(requests, on: buffer)
+                } catch {
+                    print(error)
+            }
+            print(requests.first?.results?.first as? VNDetectedObjectObservation)
+            results = request.results as? [VNDetectedObjectObservation]
         }
-        
-        print(requests.first?.results?.first as? VNDetectedObjectObservation)
-        results = request.results as? [VNDetectedObjectObservation]
     }
     
     func completionHandler(request: VNRequest, error: Error?) {
