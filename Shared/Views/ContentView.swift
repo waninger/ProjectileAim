@@ -57,19 +57,29 @@ struct RealityKitView: UIViewRepresentable {
             print("initial setup")
             view.scene.addAnchor(anc)
         }
+        session.run(worldConfiguration)
        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
-        cameraData.anchors.forEach{ anchor in
-            let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
-            print(view.project(anc.position))
-            view.scene.addAnchor(anc)
+        
+        let newAnchors = cameraData.newAnchors
+        if newAnchors.isEmpty != true {
+            newAnchors.forEach{ newAnchor in
+                //print("new entity added name: ", newAnchor.name )
+                //print("placement", newAnchor.transform)
+                
+                let entity = CreatAnchorEntity.CreateEntity(anchor: newAnchor)
+                view.scene.addAnchor(entity)
+            }
         }
         let box = cameraData.boundingBox
         if(box != nil){
-            print("adding bounding box")
-            view.scene.addAnchor(CreatAnchorEntity.CreateBoundingbox(anchor: box!))
+            view.scene.anchors.forEach{ anchor in
+                if(anchor.name == "boundingbox"){
+                }
+            }
+            print("boundinbox found")
         }
     }
     

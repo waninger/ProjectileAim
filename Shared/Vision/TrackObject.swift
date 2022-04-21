@@ -15,15 +15,19 @@ class TrackObject{
     let requestHandler = VNSequenceRequestHandler()
     var trackingLevel = VNRequestTrackingLevel.fast
     var observation : VNDetectedObjectObservation?
+    var point:CGPoint?
 
     
     func setObservationRect(rect:CGRect){
-        if rect.minX>0 && rect.maxX<1420 && rect.minY>0 && rect.maxY>1920{
+        print(rect, rect.minX, rect.maxX, rect.minY, rect.maxY )
+        if rect.minX>0 && rect.maxX<1920 && rect.minY>0 && rect.maxY<1440{
+            print("set box")
             observation = VNDetectedObjectObservation(boundingBox: rect)
+            point = rect.origin
         }
     }
 
-    func TrackObject(buffer:CVPixelBuffer){
+    func trackObject(buffer:CVPixelBuffer){
         if observation != nil{
             var requests = [VNRequest]()
             lazy var request: VNTrackingRequest = {
@@ -37,8 +41,8 @@ class TrackObject{
                 } catch {
                     print(error)
             }
-            print(requests.first?.results?.first as? VNDetectedObjectObservation)
             results = request.results as? [VNDetectedObjectObservation]
+            print(results?.first)
         }
     }
     
