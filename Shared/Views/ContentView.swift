@@ -71,6 +71,7 @@ struct RealityKitView: UIViewRepresentable {
                 
                 let entity = CreatAnchorEntity.CreateEntity(anchor: newAnchor)
                 view.scene.addAnchor(entity)
+                
             }
         }
         let box = cameraData.boundingBox

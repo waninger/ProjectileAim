@@ -42,7 +42,7 @@ class TrackObject{
                     print(error)
             }
             results = request.results as? [VNDetectedObjectObservation]
-            print(results?.first)
+            //print(results?.first)
         }
     }
     
