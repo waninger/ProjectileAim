@@ -25,6 +25,18 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if boundingBox != nil { boundingBox = nil }
+        ////-----------------
+        let placement = simd_float3(x: 0, y: 1, z: -3)
+        
+        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .portrait, viewportSize: frame.camera.imageResolution)
+        //print("pixel in frame: ",pixelPlacement)
+        var worldPoint = frame.camera.unprojectPoint(CGPoint(x: 0.5,y: 0.5), ontoPlane: frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)), orientation: .portrait, viewportSize: frame.camera.imageResolution)
+        
+        //print(frame.camera.projectionMatrix)
+        //print(frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)))
+        print("place in world: ", worldPoint?.x, worldPoint?.y
+              , worldPoint?.z)
+        ////----------------------------
         
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
@@ -32,20 +44,24 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             if(anchors.last?.name == "mugg"){
                 print("mugg foun and adding rect")
-                trackObject.setObservationRect(rect: CGRect(x: 0.5, y: 0.5, width: 0.1, height: 0.1))
+                let placement = simd_float3(x: (anchors.last?.transform.columns.3.x)!, y: (anchors.last?.transform.columns.3.y)!, z: (anchors.last?.transform.columns.3.z)!)
+                let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeRight, viewportSize: frame.camera.imageResolution)
+                trackObject.setObservationRect(rect: CGRect(x: pixelPlacement.x/1920, y: pixelPlacement.y/1440, width: 0.1, height: 0.1))
+                print(pixelPlacement)
+                
                 trackObject.trackObject(buffer: frame.capturedImage)
                 boundingBox = createAnchor(frame: frame)
                 newAnchors.append(boundingBox!)
+                print("från point till camera",frame.camera.unprojectPoint(pixelPlacement, ontoPlane: frame.camera.projectionMatrix, orientation: .portrait, viewportSize: frame.camera.imageResolution))
+                
             }
             
         }
         trackInterval -= 1
         if trackInterval < 0{
-            trackInterval = 10
+            trackInterval = 5
             trackObject.trackObject(buffer: frame.capturedImage)
         }
-        
-        //print(frame.camera.projectPoint(<#T##point: simd_float3##simd_float3#>, orientation: .portrait, viewportSize: frame.camera.imageResolution))
     }
 
     func createRect(){
@@ -63,6 +79,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         let Y = Float((trackObject.results?.first?.boundingBox.midY)!)
         let Z = byteBuffer[Int(X*256*192*Y)]
 
+        
         transform = frameIn.camera.transform
         transform.columns.3[0] = X * 1920
         transform.columns.3[1] = Y * 1440
