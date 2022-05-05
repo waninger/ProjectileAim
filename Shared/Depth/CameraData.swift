@@ -19,75 +19,65 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     private let trackObject = TrackObject()
     var trackInterval = 10
     var savedPixelBuffer = [CVPixelBuffer]()
+    var savedTimestamps = [TimeInterval]()
+    var recording = false
  
     private override init() {
         super.init()
     }
     
-
-    
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         
-        DispatchQueue.global(qos: .userInitiated).async {
-        
-            if(self.savedPixelBuffer.count < 1000) {
-                var _copy: CVPixelBuffer?
-                
-                CVPixelBufferCreate(
-                            nil,
-                            CVPixelBufferGetWidth(frame.capturedImage),
-                            CVPixelBufferGetHeight(frame.capturedImage),
-                            CVPixelBufferGetPixelFormatType(frame.capturedImage),
-                            CVBufferCopyAttachments(frame.capturedImage, .shouldPropagate),
-                            &_copy)
-                
-                
-                guard let copy = _copy else { fatalError() }
+        if(recording == true) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                if(self.savedPixelBuffer.count < 420) {
+                    
+                    var _copy: CVPixelBuffer?
+                    
+                    CVPixelBufferCreate(
+                                nil,
+                                CVPixelBufferGetWidth(frame.capturedImage),
+                                CVPixelBufferGetHeight(frame.capturedImage),
+                                CVPixelBufferGetPixelFormatType(frame.capturedImage),
+                                CVBufferCopyAttachments(frame.capturedImage, .shouldPropagate),
+                                &_copy)
+                    
+                    
+                    guard let copy = _copy else { fatalError() }
 
-                CVPixelBufferLockBaseAddress(frame.capturedImage, .readOnly)
-                CVPixelBufferLockBaseAddress(copy, [])
-                defer
-                {
-                    CVPixelBufferUnlockBaseAddress(copy, [])
-                    CVPixelBufferUnlockBaseAddress(frame.capturedImage, .readOnly)
+                    CVPixelBufferLockBaseAddress(frame.capturedImage, .readOnly)
+                    CVPixelBufferLockBaseAddress(copy, [])
+                    defer
+                    {
+                        CVPixelBufferUnlockBaseAddress(copy, [])
+                        CVPixelBufferUnlockBaseAddress(frame.capturedImage, .readOnly)
+                    }
+
+                    for plane in 0 ..< CVPixelBufferGetPlaneCount(frame.capturedImage)
+                    {
+                        let dest        = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
+                        let source      = CVPixelBufferGetBaseAddressOfPlane(frame.capturedImage, plane)
+                        let height      = CVPixelBufferGetHeightOfPlane(frame.capturedImage, plane)
+                        let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(frame.capturedImage, plane)
+
+                        memcpy(dest, source, height * bytesPerRow)
+                    }
+                
+                self.savedPixelBuffer.append(_copy!)
+                self.savedTimestamps.append(frame.timestamp)
+                    
+                let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
+                
+                print("SAVED: ", buf)
+                print("COUNT: ", self.savedPixelBuffer.count)
                 }
-
-                
-                for plane in 0 ..< CVPixelBufferGetPlaneCount(frame.capturedImage)
-                {
-                    let dest        = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
-                    let source      = CVPixelBufferGetBaseAddressOfPlane(frame.capturedImage, plane)
-                    let height      = CVPixelBufferGetHeightOfPlane(frame.capturedImage, plane)
-                    let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(frame.capturedImage, plane)
-
-                    memcpy(dest, source, height * bytesPerRow)
-                }
-            
-            self.savedPixelBuffer.append(_copy!)
-            let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
-            
-            print("SAVED: ", buf)
-            print("COUNT: ", self.savedPixelBuffer.count)
-        
             }
-                
         }
-        
+        if
+  
         
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if boundingBox != nil { boundingBox = nil }
-        ////-----------------
-        let placement = simd_float3(x: 0, y: 1, z: -3)
-        
-        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .portrait, viewportSize: frame.camera.imageResolution)
-        //print("pixel in frame: ",pixelPlacement)
-        var worldPoint = frame.camera.unprojectPoint(CGPoint(x: 0.5,y: 0.5), ontoPlane: frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)), orientation: .portrait, viewportSize: frame.camera.imageResolution)
-        
-        //print(frame.camera.projectionMatrix)
-        //print(frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)))
-        //print("place in world: ", worldPoint?.x, worldPoint?.y
-          //    , worldPoint?.z)
-        ////----------------------------
         
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
@@ -113,6 +103,11 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             trackInterval = 5
             trackObject.trackObject(buffer: frame.capturedImage)
         }
+        
+        if self.savedPixelBuffer.count >= 420 {
+            self.recording = false
+        }
+        
     }
 
     func createRect(){
