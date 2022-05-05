@@ -1,0 +1,4 @@
+struct DemoData: Codable {
+    let title: String
+    let description: String
+}

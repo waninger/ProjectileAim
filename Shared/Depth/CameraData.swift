@@ -7,6 +7,8 @@
 
 import Foundation
 import ARKit
+import UIKit
+import SceneKit
 
 
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
@@ -16,13 +18,62 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     @Published var boundingBox:ARAnchor?
     private let trackObject = TrackObject()
     var trackInterval = 10
-    
+    var savedPixelBuffer = [CVPixelBuffer]()
+ 
     private override init() {
         super.init()
     }
+    
 
-
+    
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+        
+            if(self.savedPixelBuffer.count < 1000) {
+                var _copy: CVPixelBuffer?
+                
+                CVPixelBufferCreate(
+                            nil,
+                            CVPixelBufferGetWidth(frame.capturedImage),
+                            CVPixelBufferGetHeight(frame.capturedImage),
+                            CVPixelBufferGetPixelFormatType(frame.capturedImage),
+                            CVBufferCopyAttachments(frame.capturedImage, .shouldPropagate),
+                            &_copy)
+                
+                
+                guard let copy = _copy else { fatalError() }
+
+                CVPixelBufferLockBaseAddress(frame.capturedImage, .readOnly)
+                CVPixelBufferLockBaseAddress(copy, [])
+                defer
+                {
+                    CVPixelBufferUnlockBaseAddress(copy, [])
+                    CVPixelBufferUnlockBaseAddress(frame.capturedImage, .readOnly)
+                }
+
+                
+                for plane in 0 ..< CVPixelBufferGetPlaneCount(frame.capturedImage)
+                {
+                    let dest        = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
+                    let source      = CVPixelBufferGetBaseAddressOfPlane(frame.capturedImage, plane)
+                    let height      = CVPixelBufferGetHeightOfPlane(frame.capturedImage, plane)
+                    let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(frame.capturedImage, plane)
+
+                    memcpy(dest, source, height * bytesPerRow)
+                }
+            
+            self.savedPixelBuffer.append(_copy!)
+            let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
+            
+            print("SAVED: ", buf)
+            print("COUNT: ", self.savedPixelBuffer.count)
+        
+            }
+                
+        }
+        
+        
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if boundingBox != nil { boundingBox = nil }
         ////-----------------
@@ -34,8 +85,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
         //print(frame.camera.projectionMatrix)
         //print(frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)))
-        print("place in world: ", worldPoint?.x, worldPoint?.y
-              , worldPoint?.z)
+        //print("place in world: ", worldPoint?.x, worldPoint?.y
+          //    , worldPoint?.z)
         ////----------------------------
         
         if anchors.count < frame.anchors.count{
