@@ -73,7 +73,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 }
             }
         }
-        if
   
         
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
