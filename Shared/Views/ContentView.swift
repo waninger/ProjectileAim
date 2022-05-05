@@ -97,9 +97,18 @@ struct RealityKitView: UIViewRepresentable {
 
 
 struct ContentView: View {
+
+    
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
+      
+      VStack(alignment: .leading) {
+                  Button("START") {
+                      
+                  }
+
+      }
   }
 }
 

@@ -42,6 +42,8 @@
 		C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
 		C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
 		C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
+		C3CB44FC28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
+		C3CB44FD28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,7 @@
 		C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
 		C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		C3CB44FB28227AAD00129597 /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,7 @@
 				C32CE82A27FD7EFC001D6EDC /* Vision */,
 				AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */,
 				AFAF93F827F3357E002EFFBA /* Assets.xcassets */,
+				C3CB44FB28227AAD00129597 /* data.json */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -366,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFAF942227F3357E002EFFBA /* Assets.xcassets in Resources */,
+				C3CB44FC28227AAD00129597 /* data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFAF942327F3357E002EFFBA /* Assets.xcassets in Resources */,
+				C3CB44FD28227AAD00129597 /* data.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +593,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZXG53VSJ5;
+				DEVELOPMENT_TEAM = MBM9A5ZST5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
@@ -618,7 +624,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZXG53VSJ5;
+				DEVELOPMENT_TEAM = MBM9A5ZST5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";

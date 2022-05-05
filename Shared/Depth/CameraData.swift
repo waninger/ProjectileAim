@@ -7,6 +7,8 @@
 
 import Foundation
 import ARKit
+import UIKit
+import SceneKit
 
 
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
@@ -16,18 +18,70 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     @Published var boundingBox:ARAnchor?
     private let trackObject = TrackObject()
     var trackInterval = 10
+
+    var savedPixelBuffer = [CVPixelBuffer]()
+    var savedTimestamps = [TimeInterval]()
+    var recording = false
+
     private override init() {
         super.init()
     }
-
-
+    
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        
+        if(recording == true) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                if(self.savedPixelBuffer.count < 420) {
+                    
+                    var _copy: CVPixelBuffer?
+                    
+                    CVPixelBufferCreate(
+                                nil,
+                                CVPixelBufferGetWidth(frame.capturedImage),
+                                CVPixelBufferGetHeight(frame.capturedImage),
+                                CVPixelBufferGetPixelFormatType(frame.capturedImage),
+                                CVBufferCopyAttachments(frame.capturedImage, .shouldPropagate),
+                                &_copy)
+                    
+                    
+                    guard let copy = _copy else { fatalError() }
+
+                    CVPixelBufferLockBaseAddress(frame.capturedImage, .readOnly)
+                    CVPixelBufferLockBaseAddress(copy, [])
+                    defer
+                    {
+                        CVPixelBufferUnlockBaseAddress(copy, [])
+                        CVPixelBufferUnlockBaseAddress(frame.capturedImage, .readOnly)
+                    }
+
+                    for plane in 0 ..< CVPixelBufferGetPlaneCount(frame.capturedImage)
+                    {
+                        let dest        = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
+                        let source      = CVPixelBufferGetBaseAddressOfPlane(frame.capturedImage, plane)
+                        let height      = CVPixelBufferGetHeightOfPlane(frame.capturedImage, plane)
+                        let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(frame.capturedImage, plane)
+
+                        memcpy(dest, source, height * bytesPerRow)
+                    }
+                
+                self.savedPixelBuffer.append(_copy!)
+                self.savedTimestamps.append(frame.timestamp)
+                    
+                let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
+                
+                print("SAVED: ", buf)
+                print("COUNT: ", self.savedPixelBuffer.count)
+                }
+            }
+        }
+  
+        
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if boundingBox != nil { boundingBox = nil }
-                
+       
         if frame.anchors.first != nil {
         }
-        
+
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
             newAnchors.append(frame.anchors.last!)
@@ -51,6 +105,11 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             trackInterval = 5
             trackObject.trackObject(buffer: frame.capturedImage)
         }
+        
+        if self.savedPixelBuffer.count >= 420 {
+            self.recording = false
+        }
+        
     }
 
     func createRect(){

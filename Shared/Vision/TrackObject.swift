@@ -16,6 +16,9 @@ class TrackObject{
     var trackingLevel = VNRequestTrackingLevel.fast
     var observation : VNDetectedObjectObservation?
     var point:CGPoint?
+    var pixelBuffer = [CVPixelBuffer]()
+    var timeIntervals = [TimeInterval]()
+    var objectToTrack = CGRect()
 
     
     func setObservationRect(rect:CGRect){
@@ -28,8 +31,9 @@ class TrackObject{
     }
 
     func trackObject(buffer:CVPixelBuffer){
-        if observation != nil{
+        if observation != nil {
             var requests = [VNRequest]()
+            
             lazy var request: VNTrackingRequest = {
                 let trackingRequest = VNTrackObjectRequest(detectedObjectObservation: observation!)
                 return trackingRequest
