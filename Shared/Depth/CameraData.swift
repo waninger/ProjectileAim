@@ -17,7 +17,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     @Published var newAnchors = [ARAnchor]()
     @Published var boundingBox:ARAnchor?
     private let trackObject = TrackObject()
-    var trackInterval = 10
 
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
@@ -42,7 +41,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                                 CVPixelBufferGetPixelFormatType(frame.capturedImage),
                                 CVBufferCopyAttachments(frame.capturedImage, .shouldPropagate),
                                 &_copy)
-                    
                     
                     guard let copy = _copy else { fatalError() }
 
@@ -81,70 +79,50 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
        
         if frame.anchors.first != nil {
         }
-
+        // anchor management
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
             newAnchors.append(frame.anchors.last!)
             
+            // om vi har hittat både boll och mål skapa plan
             if(anchors.last?.name == "mugg"){
-                print("mugg foun and adding rect")
-                let placement = simd_float3(x: (anchors.last?.transform.columns.3.x)!, y: (anchors.last?.transform.columns.3.y)!, z: (anchors.last?.transform.columns.3.z)!)
-                let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeRight, viewportSize: frame.camera.imageResolution)
-                //trackObject.setObservationRect(rect: CGRect(x: pixelPlacement.x/1920, y: pixelPlacement.y/1440, width: 0.1, height: 0.1))
                 
-                //trackObject.trackObject(buffer: frame.capturedImage)
-                boundingBox = createAnchor(frame: frame)
+                boundingBox = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
                 newAnchors.append(boundingBox!)
                 session.add(anchor: boundingBox!)
-
             }
-            
         }
-        trackInterval -= 1
-        if trackInterval < 0{
-            trackInterval = 5
-            trackObject.trackObject(buffer: frame.capturedImage)
-        }
-        
         if self.savedPixelBuffer.count >= 420 {
             self.recording = false
         }
-        
-    }
-
-    func createRect(){
-        let rect = CGRect(x: 1000, y: 720, width: 300, height: 300)
     }
     
-    func CreateTransform(frameIn:ARFrame)->simd_float4x4{
-        var transform = simd_float4x4(1)
-
-        transform.columns.3 = (frameIn.anchors.last?.transform.columns.3)!
-        let angle = angleBetween(matrixA: transform, matrixB: frameIn.camera.transform)
-        print(angle)
-        transform = rotateY(matrix: transform, RadAngle: angle)
-        transform = rotateX(matrix: transform, RadAngle: -Float.pi/2)
-        //transform.columns.3 = (frameIn.anchors.last?.transform.columns.3)!
-        print(transform)
-        return transform
-    }
     
-    func createAnchor(frame:ARFrame)->ARAnchor{
-        let anchor = ARAnchor(name: "boundingbox", transform: CreateTransform(frameIn: frame))
+    //MARK: World setup and anchors
+    func createPlaneAnchor(fromMatrix: simd_float4x4, toMatrix:simd_float4x4)->ARAnchor{
+        let anchor = ARAnchor(name: "boundingbox", transform: CreatePlaneTransform(fromMatrix,toMatrix))
         return anchor
     }
-    
-    func calculateDistance(frame:ARFrame){
-        let cx = frame.camera.transform.columns.3[0]
-        let cy = frame.camera.transform.columns.3[1]
-        let cz = frame.camera.transform.columns.3[2]
-        frame.anchors.forEach { anchor in
-            let ax = anchor.transform.columns.3[0]
-            let ay = anchor.transform.columns.3[1]
-            let az = anchor.transform.columns.3[2]
-            let distance = sqrt(pow(ax-cx,2)+pow(ay-cy,2)+pow(az-cz,2))
-        }
+
+    func CreatePlaneTransform(_ fromMatrix: simd_float4x4, _ toMatrix:simd_float4x4)->simd_float4x4{
+        var transform = simd_float4x4(1)
+
+        transform.columns.3 = (fromMatrix.columns.3)
+        let angle = angleBetween(matrixA: transform, matrixB: toMatrix)
+        transform = rotateY(matrix: transform, RadAngle: angle)
+        transform = rotateX(matrix: transform, RadAngle: -Float.pi/2)
+        return transform
     }
+    func worldToView(frame: ARFrame) -> CGRect?{
+        let placement = simd_float3(x: (anchors.last?.transform.columns.3.x)!, y: (anchors.last?.transform.columns.3.y)!, z: (anchors.last?.transform.columns.3.z)!)
+        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeRight, viewportSize: frame.camera.imageResolution)
+        let rect = CGRect(x: pixelPlacement.x-96, y: pixelPlacement.y-72, width: 1920, height: 1440)
+        
+        if rect.minX>0 && rect.maxX<1920 && rect.minY>0 && rect.maxY<1440{
+            return rect
+        }else {return nil}
+    }
+
     
     // MARK: Matrix manipulation
     func rotateZ(matrix: simd_float4x4, RadAngle: Float)->simd_float4x4{
@@ -180,6 +158,19 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         print(atan2f(z, x))
         let angle = atan2f(z, x)
         return angle
+    }
+    
+    // MARK: Calculations
+    func calculateDistance(frame:ARFrame){
+        let cx = frame.camera.transform.columns.3[0]
+        let cy = frame.camera.transform.columns.3[1]
+        let cz = frame.camera.transform.columns.3[2]
+        frame.anchors.forEach { anchor in
+            let ax = anchor.transform.columns.3[0]
+            let ay = anchor.transform.columns.3[1]
+            let az = anchor.transform.columns.3[2]
+            let distance = sqrt(pow(ax-cx,2)+pow(ay-cy,2)+pow(az-cz,2))
+        }
     }
 }
 
