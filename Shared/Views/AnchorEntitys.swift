@@ -31,8 +31,8 @@ class CreatAnchorEntity{
             entity.addChild(diceEntity)
         case "boundingbox":
             entity.name = "boundingbox"
-            let box = MeshResource.generateBox(size: 0.2, cornerRadius: 0.05)
-            let material = SimpleMaterial(color: .blue, isMetallic: true)
+            let box = MeshResource.generatePlane(width: 3, depth: 3)
+            let material = SimpleMaterial(color: .blue, isMetallic: false)
             let diceEntity = ModelEntity(mesh: box, materials: [material])
             entity.addChild(diceEntity)
         default:

@@ -35,7 +35,6 @@ class TrackObject{
                 return trackingRequest
             }()
             requests.append(request)
-            
             do {
                 try requestHandler.perform(requests, on: buffer)
                 } catch {

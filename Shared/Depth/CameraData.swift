@@ -16,7 +16,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     @Published var boundingBox:ARAnchor?
     private let trackObject = TrackObject()
     var trackInterval = 10
-    
     private override init() {
         super.init()
     }
@@ -25,18 +24,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if boundingBox != nil { boundingBox = nil }
-        ////-----------------
-        let placement = simd_float3(x: 0, y: 1, z: -3)
-        
-        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .portrait, viewportSize: frame.camera.imageResolution)
-        //print("pixel in frame: ",pixelPlacement)
-        var worldPoint = frame.camera.unprojectPoint(CGPoint(x: 0.5,y: 0.5), ontoPlane: frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)), orientation: .portrait, viewportSize: frame.camera.imageResolution)
-        
-        //print(frame.camera.projectionMatrix)
-        //print(frame.camera.projectionMatrix(for: .portrait, viewportSize: frame.camera.imageResolution, zNear: CGFloat(1), zFar: CGFloat(5)))
-        print("place in world: ", worldPoint?.x, worldPoint?.y
-              , worldPoint?.z)
-        ////----------------------------
+                
+        if frame.anchors.first != nil {
+        }
         
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
@@ -46,14 +36,13 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 print("mugg foun and adding rect")
                 let placement = simd_float3(x: (anchors.last?.transform.columns.3.x)!, y: (anchors.last?.transform.columns.3.y)!, z: (anchors.last?.transform.columns.3.z)!)
                 let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeRight, viewportSize: frame.camera.imageResolution)
-                trackObject.setObservationRect(rect: CGRect(x: pixelPlacement.x/1920, y: pixelPlacement.y/1440, width: 0.1, height: 0.1))
-                print(pixelPlacement)
+                //trackObject.setObservationRect(rect: CGRect(x: pixelPlacement.x/1920, y: pixelPlacement.y/1440, width: 0.1, height: 0.1))
                 
-                trackObject.trackObject(buffer: frame.capturedImage)
+                //trackObject.trackObject(buffer: frame.capturedImage)
                 boundingBox = createAnchor(frame: frame)
                 newAnchors.append(boundingBox!)
-                print("från point till camera",frame.camera.unprojectPoint(pixelPlacement, ontoPlane: frame.camera.projectionMatrix, orientation: .portrait, viewportSize: frame.camera.imageResolution))
-                
+                session.add(anchor: boundingBox!)
+
             }
             
         }
@@ -70,23 +59,14 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     
     func CreateTransform(frameIn:ARFrame)->simd_float4x4{
         var transform = simd_float4x4(1)
-        
-        CVPixelBufferLockBaseAddress(frameIn.sceneDepth!.depthMap, .readOnly)
-        let baseAddress = CVPixelBufferGetBaseAddress(frameIn.sceneDepth!.depthMap)
-        let byteBuffer = unsafeBitCast(baseAddress, to: UnsafeMutablePointer<Float32>.self)
-        
-        let X = Float((trackObject.results?.first?.boundingBox.midX)!)
-        let Y = Float((trackObject.results?.first?.boundingBox.midY)!)
-        let Z = byteBuffer[Int(X*256*192*Y)]
 
-        
-        transform = frameIn.camera.transform
-        transform.columns.3[0] = X * 1920
-        transform.columns.3[1] = Y * 1440
-        transform.columns.3[2] -= Z
-        transform.columns.3[3] = 1
-        
-        //print(transform)
+        transform.columns.3 = (frameIn.anchors.last?.transform.columns.3)!
+        let angle = angleBetween(matrixA: transform, matrixB: frameIn.camera.transform)
+        print(angle)
+        transform = rotateY(matrix: transform, RadAngle: angle)
+        transform = rotateX(matrix: transform, RadAngle: -Float.pi/2)
+        //transform.columns.3 = (frameIn.anchors.last?.transform.columns.3)!
+        print(transform)
         return transform
     }
     
@@ -105,6 +85,42 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             let az = anchor.transform.columns.3[2]
             let distance = sqrt(pow(ax-cx,2)+pow(ay-cy,2)+pow(az-cz,2))
         }
+    }
+    
+    // MARK: Matrix manipulation
+    func rotateZ(matrix: simd_float4x4, RadAngle: Float)->simd_float4x4{
+        let col1 = simd_float4(cosf(RadAngle),-sinf(RadAngle),0,0)
+        let col2 = simd_float4(sinf(RadAngle),cosf(RadAngle),0,0)
+        let col3 = simd_float4(0,0,1,0)
+        let col4 = simd_float4(0,0,0,1)
+        let rotation = simd_float4x4(col1,col2,col3,col4)
+        return matrix*rotation
+    }
+    func rotateX(matrix: simd_float4x4, RadAngle: Float)->simd_float4x4{
+        let col1 = simd_float4(1,0,0,0)
+        let col2 = simd_float4(0,cosf(RadAngle),sinf(RadAngle),0)
+        let col3 = simd_float4(0,-sinf(RadAngle),cosf(RadAngle),0)
+        let col4 = simd_float4(0,0,0,1)
+        let rotation = simd_float4x4(col1,col2,col3,col4)
+        return matrix*rotation
+    }
+    func rotateY(matrix: simd_float4x4, RadAngle: Float)->simd_float4x4{
+        let col1 = simd_float4(cosf(RadAngle),0,sinf(RadAngle),0)
+        let col2 = simd_float4(0,1,0,0)
+        let col3 = simd_float4(-sinf(RadAngle),0,cosf(RadAngle),0)
+        let col4 = simd_float4(0,0,0,1)
+        let rotation = simd_float4x4(col1,col2,col3,col4)
+        return matrix*rotation
+    }
+    
+    func angleBetween(matrixA: simd_float4x4, matrixB: simd_float4x4)->Float{
+        let x = matrixB.columns.3.x - matrixA.columns.3.x
+        let z = (matrixB.columns.3.z - matrixA.columns.3.z)
+        print(matrixB.columns.3.x, matrixA.columns.3.x)
+        print(x,z)
+        print(atan2f(z, x))
+        let angle = atan2f(z, x)
+        return angle
     }
 }
 
