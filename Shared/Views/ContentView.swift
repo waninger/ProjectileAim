@@ -73,14 +73,6 @@ struct RealityKitView: UIViewRepresentable {
                 view.scene.addAnchor(entity)
             }
         }
-        let box = cameraData.boundingBox
-        if(box != nil){
-            view.scene.anchors.forEach{ anchor in
-                if(anchor.name == "boundingbox"){
-                }
-            }
-            print("boundinbox found")
-        }
     }
     
     private func setupObjectDetection() {
