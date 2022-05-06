@@ -123,7 +123,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         }else {return nil}
     }
 
-    
     // MARK: Matrix manipulation
     func rotateZ(matrix: simd_float4x4, RadAngle: Float)->simd_float4x4{
         let col1 = simd_float4(cosf(RadAngle),-sinf(RadAngle),0,0)
