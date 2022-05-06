@@ -15,7 +15,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     @Published var anchors = [ARAnchor]()
     @Published var newAnchors = [ARAnchor]()
-    @Published var boundingBox:ARAnchor?
+    @Published var planeAnchor:ARAnchor?
     private let trackObject = TrackObject()
 
     var savedPixelBuffer = [CVPixelBuffer]()
@@ -73,12 +73,13 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             }
         }
   
-        
+        // adding new anchors to view
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
-        if boundingBox != nil { boundingBox = nil }
+        if planeAnchor != nil { planeAnchor = nil }
        
         if frame.anchors.first != nil {
         }
+        
         // anchor management
         if anchors.count < frame.anchors.count{
             anchors = frame.anchors
@@ -87,15 +88,16 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             // om vi har hittat både boll och mål skapa plan
             if(anchors.last?.name == "mugg"){
                 
-                boundingBox = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-                newAnchors.append(boundingBox!)
-                session.add(anchor: boundingBox!)
+                planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
+                newAnchors.append(planeAnchor!)
+                session.add(anchor: planeAnchor!)
             }
         }
         if self.savedPixelBuffer.count >= 420 {
             self.recording = false
         }
     }
+    //MARK: save image and information
     
     
     //MARK: World setup and anchors
