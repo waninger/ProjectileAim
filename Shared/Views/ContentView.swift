@@ -97,9 +97,8 @@ struct ContentView: View {
       
       VStack(alignment: .leading) {
                   Button("START") {
-                      
+                      CameraData.shared.startRecording()
                   }
-
       }
   }
 }

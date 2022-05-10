@@ -17,7 +17,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     @Published var newAnchors = [ARAnchor]()
     @Published var planeAnchor:ARAnchor?
     private let trackObject = TrackObject()
-
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
     var recording = false
@@ -26,9 +25,52 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         super.init()
     }
     
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+    func startRecording() {
+        recording = true
+    }
+    
+    func checkSavedValues() {
+        if savedTimestamps.count > 2 {
+            for i in 0...savedTimestamps.count-2 {
+                       if savedTimestamps[i] < savedTimestamps[i+1] {
+                           print("true")
+                       }
+            }
+        }
         
+        if savedTimestamps.count == 420 {
+            print("420")
+        }
+    }
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        print(recording)
+        // Recording allowed and set start
         if(recording == true) {
+            
+            if(savedPixelBuffer.isEmpty) {
+                
+                var anchor = anchors.last(where: { $0.name == "boll" })
+                if(anchor != nil ){
+                    print(anchor?.name)
+                    let rect = worldToView(frame: frame, anchor: anchor!)
+                    if(rect != nil) {
+                        trackObject.setObjectToTrack(rect: rect!)
+                    }else {
+                        recording = false
+                        print("rect is nil")
+                    }
+                }else {
+                    recording = false
+                    print("anchor is nil")
+                }
+            }
+        }
+        
+        
+        //MARK: Copy buffer from frame to new buffer
+        if(recording == true) {
+            
             DispatchQueue.global(qos: .userInitiated).async {
                 if(self.savedPixelBuffer.count < 420) {
                     
@@ -62,17 +104,29 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                         memcpy(dest, source, height * bytesPerRow)
                     }
                 
-                self.savedPixelBuffer.append(_copy!)
-                self.savedTimestamps.append(frame.timestamp)
+                    self.savedPixelBuffer.append(_copy!)
+                    self.savedTimestamps.append(frame.timestamp)
+                        
+                    let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
                     
-                let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
+                    print("SAVED: ", buf)
+                    print("COUNT: ", self.savedPixelBuffer.count)
                 
-                print("SAVED: ", buf)
-                print("COUNT: ", self.savedPixelBuffer.count)
                 }
             }
         }
-  
+        
+        if recording == true && savedTimestamps.count >= 420 {
+            recording = false
+            trackObject.setBuffer(buffer: savedPixelBuffer)
+            trackObject.setTime(times: savedTimestamps)
+            DispatchQueue.global().async {
+                self.trackObject.performTracking()
+            }
+            savedPixelBuffer.removeAll()
+            savedTimestamps.removeAll()
+        }
+        
         // adding new anchors to view
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if planeAnchor != nil { planeAnchor = nil }
@@ -86,7 +140,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             newAnchors.append(frame.anchors.last!)
             
             // om vi har hittat både boll och mål skapa plan
-            if(anchors.last?.name == "mugg"){
+            if(anchors.last?.name == "boll"){
                 
                 planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
                 newAnchors.append(planeAnchor!)
@@ -115,12 +169,18 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         transform = rotateX(matrix: transform, RadAngle: -Float.pi/2)
         return transform
     }
-    func worldToView(frame: ARFrame) -> CGRect?{
-        let placement = simd_float3(x: (anchors.last?.transform.columns.3.x)!, y: (anchors.last?.transform.columns.3.y)!, z: (anchors.last?.transform.columns.3.z)!)
-        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeRight, viewportSize: frame.camera.imageResolution)
-        let rect = CGRect(x: pixelPlacement.x-96, y: pixelPlacement.y-72, width: 1920, height: 1440)
+    func worldToView(frame: ARFrame, anchor: ARAnchor) -> CGRect?{
+        let placement = simd_float3(x: (anchor.transform.columns.3.x), y: (anchor.transform.columns.3.y), z: (anchor.transform.columns.3.z))
+        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
         
-        if rect.minX>0 && rect.maxX<1920 && rect.minY>0 && rect.maxY<1440{
+        var y =  1440 - pixelPlacement.y
+        y = y/1440
+        var x = pixelPlacement.x/1920
+        y = y - 0.05
+        x = x - 0.05
+        
+        let rect = CGRect(x: x, y: y, width: 0.1, height: 0.1)
+        if rect.minX>0 && rect.maxX<1 && rect.minY>0 && rect.maxY<1{
             return rect
         }else {return nil}
     }

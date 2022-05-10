@@ -9,7 +9,61 @@ import Foundation
 import Vision
 import UIKit
 
-class TrackObject{
+class TrackObject {
+    var objectToTrack: CGRect?
+    var frames: [CVPixelBuffer]?
+    var times: [TimeInterval]?
+    var trackedPoints = [CGPoint]()
+    
+    func setObjectToTrack(rect: CGRect) {
+        objectToTrack = rect
+    }
+    
+    func setBuffer(buffer: [CVPixelBuffer]) {
+        frames = buffer
+    }
+    
+    func setTime(times: [TimeInterval]) {
+        self.times = times
+    }
+    
+    
+    func performTracking() {
+        
+        var inputObservations = VNDetectedObjectObservation(boundingBox: objectToTrack!)
+        let requestHandler = VNSequenceRequestHandler()
+        
+        for frame in frames! {
+            print(frames?.firstIndex(of: frame)!)
+            var trackingRequests = [VNRequest]()
+            
+            lazy var request: VNTrackingRequest = {
+                let trackObjectRequest = VNTrackObjectRequest(detectedObjectObservation: inputObservations)
+                return trackObjectRequest
+            }()
+            request.trackingLevel = VNRequestTrackingLevel.accurate
+            trackingRequests.append(request)
+            
+            do {
+                try requestHandler.perform(trackingRequests, on: frame)
+                } catch {
+                    print(error)
+            }
+            
+            var result = trackingRequests.first?.results as? [VNDetectedObjectObservation]
+            print(result!.first)
+            let point = CGPoint(x: (result?.first?.boundingBox.midX)!, y: (result?.first?.boundingBox.midY)!)
+            trackedPoints.append(point)
+            
+            inputObservations = (result?.first)!
+        }
+        
+        for point in trackedPoints {
+            print("tracked points x: ", point.x, " y: ", point.y)
+        }
+        
+    }
+    /*
     var results: [VNDetectedObjectObservation]?
     var inputObservations = [UUID: VNDetectedObjectObservation]()
     let requestHandler = VNSequenceRequestHandler()
@@ -39,6 +93,7 @@ class TrackObject{
                 return trackingRequest
             }()
             requests.append(request)
+            
             do {
                 try requestHandler.perform(requests, on: buffer)
                 } catch {
@@ -47,10 +102,6 @@ class TrackObject{
             results = request.results as? [VNDetectedObjectObservation]
             //print(results?.first)
         }
-    }
-    
-    func completionHandler(request: VNRequest, error: Error?) {
-        guard let result = request.results as? [VNDetectedObjectObservation] else { return }
-        results = result
-    }
+    }*/
+
 }
