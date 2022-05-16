@@ -52,13 +52,13 @@ struct RealityKitView: UIViewRepresentable {
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
         
-        cameraData.anchors.forEach{ anchor in
+        cameraData.anchors.forEach { anchor in
             let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
             print("initial setup")
             view.scene.addAnchor(anc)
         }
         session.run(worldConfiguration)
-       return view
+        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
@@ -68,7 +68,7 @@ struct RealityKitView: UIViewRepresentable {
             newAnchors.forEach{ newAnchor in
                 //print("new entity added name: ", newAnchor.name )
                 //print("placement", newAnchor.transform)
-                print("new anchor")
+                print("new anchor") 
                 let entity = CreatAnchorEntity.CreateEntity(anchor: newAnchor)
                 view.scene.addAnchor(entity)
             }
