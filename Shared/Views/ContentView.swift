@@ -68,7 +68,6 @@ struct RealityKitView: UIViewRepresentable {
             newAnchors.forEach{ newAnchor in
                 //print("new entity added name: ", newAnchor.name )
                 //print("placement", newAnchor.transform)
-                print("new anchor")
                 let entity = CreatAnchorEntity.CreateEntity(anchor: newAnchor)
                 view.scene.addAnchor(entity)
             }

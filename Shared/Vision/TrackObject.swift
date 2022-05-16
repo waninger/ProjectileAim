@@ -27,6 +27,9 @@ class TrackObject {
         self.times = times
     }
     
+    func getPoints()->[CGPoint]{
+        return trackedPoints
+    }
     
     func performTracking() {
         
@@ -51,17 +54,18 @@ class TrackObject {
             }
             
             var result = trackingRequests.first?.results as? [VNDetectedObjectObservation]
-            print(result!.first)
-            let point = CGPoint(x: (result?.first?.boundingBox.midX)!, y: (result?.first?.boundingBox.midY)!)
-            trackedPoints.append(point)
+            if result != nil {
+                print(result!.first)
+                let point = CGPoint(x: (result?.first?.boundingBox.midX)!, y: (result?.first?.boundingBox.midY)!)
+                trackedPoints.append(point)
+            } else {
+                let point = CGPoint(x: 0, y: 0)
+                trackedPoints.append(point)
+            }
             
+        
             inputObservations = (result?.first)!
-        }
-        
-        for point in trackedPoints {
-            print("tracked points x: ", point.x, " y: ", point.y)
-        }
-        
+        }        
     }
     /*
     var results: [VNDetectedObjectObservation]?
