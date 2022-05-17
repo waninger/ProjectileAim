@@ -13,10 +13,11 @@ import SceneKit
 
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
-    @Published var anchors = [ARAnchor]()
+    //@Published var anchors = [ARAnchor]()
     @Published var parabolaAnchors = [ARAnchor]()
     @Published var newAnchors = [ARAnchor]()
     @Published var planeAnchor:ARAnchor?
+    var anchorCount = 0
     private let trackObject = TrackObject()
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
@@ -51,7 +52,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                var anchor = anchors.last(where: { $0.name == "boll" })
+                let anchor = frame.anchors.last(where: { $0.name == "boll" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -117,7 +118,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         }
         
         //On recording done
-        if recording == true && savedTimestamps.count >= 420 {
+        if recording == true && savedPixelBuffer.count >= 420 {
             recording = false
             trackObject.setBuffer(buffer: savedPixelBuffer)
             trackObject.setTime(times: savedTimestamps)
@@ -139,9 +140,15 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
         // MARK: anchor management
         // adding new anchors to view
-        if newAnchors.isEmpty != true { newAnchors.removeAll()}
-        if planeAnchor != nil { planeAnchor = nil }
-       
+        if !newAnchors.isEmpty { newAnchors.removeAll()}
+        
+        
+        //points to anchor
+        if !pointsFromTracking.isEmpty {
+            var points = [CGPoint]()
+            points.append(pointsFromTracking.removeFirst())
+            parabolaAnchors.append(contentsOf: addPointsToWorld(frame: frame, points: points))
+        }
         
         // adding parabola
         if !parabolaAnchors.isEmpty{
@@ -152,29 +159,17 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         }
         
         
-        if anchors.count < frame.anchors.count{
-            for count in anchors.count ..< frame.anchors.count{
+        if anchorCount < frame.anchors.count{
+            for count in anchorCount ..< frame.anchors.count{
                 newAnchors.append(frame.anchors[count])
             }
             // om vi har hittat både boll och mål skapa plan
-            if(frame.anchors.last?.name == "boll"){
+            if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "boll" }) != nil ){
                 planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
                 session.add(anchor: planeAnchor!)
             }
-            anchors = frame.anchors
+            anchorCount = frame.anchors.count
         }
-        
-
-        if !pointsFromTracking.isEmpty {
-            var points = [CGPoint]()
-            for index in 0...4 {
-                if !pointsFromTracking.isEmpty {
-                    points.append(pointsFromTracking.removeFirst())
-                }
-            }
-            parabolaAnchors.append(contentsOf: addPointsToWorld(frame: frame, points: points))
-        }
-        
     }
     
     
