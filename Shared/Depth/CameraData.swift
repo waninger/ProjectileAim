@@ -116,6 +116,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             }
         }
         
+        //On recording done
         if recording == true && savedTimestamps.count >= 420 {
             recording = false
             trackObject.setBuffer(buffer: savedPixelBuffer)
@@ -131,32 +132,26 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             group.notify(queue:.main) {
                 self.pointsFromTracking = self.trackObject.trackedPoints
-                //self.trackObject.getPoints().enumerated().forEach { (index, points) in
-                    //if index % 10 == 0 {
-                      //  self.pointsFromTracking.append(self.trackObject.trackedPoints[index])
-                    //    print(self.pointsFromTracking[index])
-                    //}
-               //}
             }
             savedPixelBuffer.removeAll()
             savedTimestamps.removeAll()
         }
         
+        // MARK: anchor management
         // adding new anchors to view
         if newAnchors.isEmpty != true { newAnchors.removeAll()}
         if planeAnchor != nil { planeAnchor = nil }
        
-        if frame.anchors.first != nil {
-            
-        }
         
-        // anchor management
+        // adding parabola
         if !parabolaAnchors.isEmpty{
             parabolaAnchors.forEach { anchor in
                 session.add(anchor: anchor)
             }
             parabolaAnchors.removeAll()
         }
+        
+        
         if anchors.count < frame.anchors.count{
             for count in anchors.count ..< frame.anchors.count{
                 newAnchors.append(frame.anchors[count])
@@ -169,10 +164,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             anchors = frame.anchors
         }
         
-        if self.savedPixelBuffer.count >= 420 {
-            self.recording = false
-        }
-        
+
         if !pointsFromTracking.isEmpty {
             var points = [CGPoint]()
             for index in 0...4 {
@@ -184,7 +176,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         }
         
     }
-    //MARK: save image and information
     
     
     //MARK: World setup and anchors
