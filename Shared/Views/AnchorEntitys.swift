@@ -43,7 +43,7 @@ class CreatAnchorEntity{
             entity.addChild(point)
         default:
             let box = MeshResource.generateBox(size: 0.02, cornerRadius: 0.05)
-            let material = SimpleMaterial(color: .blue, isMetallic: true)
+            let material = SimpleMaterial(color: .magenta, isMetallic: true)
             let diceEntity = ModelEntity(mesh: box, materials: [material])
             entity.addChild(diceEntity)
         }

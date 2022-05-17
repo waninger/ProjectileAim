@@ -51,7 +51,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                var anchor = anchors.last(where: { $0.name == "mugg" })
+                var anchor = anchors.last(where: { $0.name == "boll" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -130,12 +130,13 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             }
             
             group.notify(queue:.main) {
-                self.trackObject.getPoints().enumerated().forEach { (index, points) in
-                    if index % 10 == 0 {
-                        self.pointsFromTracking.append(self.trackObject.trackedPoints[index])
-                        print(self.pointsFromTracking[index])
-                    }
-                }
+                self.pointsFromTracking = self.trackObject.trackedPoints
+                //self.trackObject.getPoints().enumerated().forEach { (index, points) in
+                    //if index % 10 == 0 {
+                      //  self.pointsFromTracking.append(self.trackObject.trackedPoints[index])
+                    //    print(self.pointsFromTracking[index])
+                    //}
+               //}
             }
             savedPixelBuffer.removeAll()
             savedTimestamps.removeAll()
@@ -161,8 +162,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 newAnchors.append(frame.anchors[count])
             }
             // om vi har hittat både boll och mål skapa plan
-            if(frame.anchors.last?.name == "mugg"){
-                
+            if(frame.anchors.last?.name == "boll"){
                 planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
                 session.add(anchor: planeAnchor!)
             }
@@ -176,7 +176,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if !pointsFromTracking.isEmpty {
             var points = [CGPoint]()
             for index in 0...4 {
-                points.append(pointsFromTracking.removeFirst())
+                if !pointsFromTracking.isEmpty {
+                    points.append(pointsFromTracking.removeFirst())
+                }
             }
             parabolaAnchors.append(contentsOf: addPointsToWorld(frame: frame, points: points))
         }
@@ -192,7 +194,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         var parabolaAnchors = [ARAnchor]()
         points.forEach { point in
             i += 1
-            let viewportPoint = CGPoint(x: point.x * 1920, y: point.y * 1440)
+            let viewportPoint = CGPoint(x: (1 - point.x) * 1920, y: point.y * 1440)
             let placement = frame.camera.unprojectPoint(viewportPoint, ontoPlane: plane!.transform, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
             if(placement != nil){
                 var transform = simd_float4x4(1)
