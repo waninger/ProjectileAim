@@ -14,11 +14,13 @@ import SceneKit
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     @Published var anchors = [ARAnchor]()
+    @Published var parabolaAnchors = [ARAnchor]()
     @Published var newAnchors = [ARAnchor]()
     @Published var planeAnchor:ARAnchor?
     private let trackObject = TrackObject()
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
+    var pointsFromTracking = [CGPoint]()
     var recording = false
 
     private override init() {
@@ -44,15 +46,13 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print(recording)
+     
         // Recording allowed and set start
         if(recording == true) {
-            
             if(savedPixelBuffer.isEmpty) {
                 
                 var anchor = anchors.last(where: { $0.name == "boll" })
                 if(anchor != nil ){
-                    print(anchor?.name)
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
                         trackObject.setObjectToTrack(rect: rect!)
@@ -120,8 +120,23 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             recording = false
             trackObject.setBuffer(buffer: savedPixelBuffer)
             trackObject.setTime(times: savedTimestamps)
+            
+            let group = DispatchGroup()
+            group.enter()
+            
             DispatchQueue.global().async {
                 self.trackObject.performTracking()
+                group.leave()
+            }
+            
+            group.notify(queue:.main) {
+                self.pointsFromTracking = self.trackObject.trackedPoints
+                //self.trackObject.getPoints().enumerated().forEach { (index, points) in
+                    //if index % 10 == 0 {
+                      //  self.pointsFromTracking.append(self.trackObject.trackedPoints[index])
+                    //    print(self.pointsFromTracking[index])
+                    //}
+               //}
             }
             savedPixelBuffer.removeAll()
             savedTimestamps.removeAll()
@@ -132,31 +147,72 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if planeAnchor != nil { planeAnchor = nil }
        
         if frame.anchors.first != nil {
+            
         }
         
         // anchor management
+        if !parabolaAnchors.isEmpty{
+            parabolaAnchors.forEach { anchor in
+                session.add(anchor: anchor)
+            }
+            parabolaAnchors.removeAll()
+        }
         if anchors.count < frame.anchors.count{
-            anchors = frame.anchors
-            newAnchors.append(frame.anchors.last!)
-            
+            for count in anchors.count ..< frame.anchors.count{
+                newAnchors.append(frame.anchors[count])
+            }
             // om vi har hittat både boll och mål skapa plan
-            if(anchors.last?.name == "boll"){
-                
+            if(frame.anchors.last?.name == "boll"){
                 planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-                newAnchors.append(planeAnchor!)
                 session.add(anchor: planeAnchor!)
             }
+            anchors = frame.anchors
         }
+        
         if self.savedPixelBuffer.count >= 420 {
             self.recording = false
         }
+        
+        if !pointsFromTracking.isEmpty {
+            var points = [CGPoint]()
+            for index in 0...4 {
+                if !pointsFromTracking.isEmpty {
+                    points.append(pointsFromTracking.removeFirst())
+                }
+            }
+            parabolaAnchors.append(contentsOf: addPointsToWorld(frame: frame, points: points))
+        }
+        
     }
     //MARK: save image and information
     
     
     //MARK: World setup and anchors
+    func addPointsToWorld(frame:ARFrame, points:[CGPoint])->[ARAnchor]{
+        let plane = anchors.last(where: { $0.name == "plane" })
+        var i = 0
+        var parabolaAnchors = [ARAnchor]()
+        points.forEach { point in
+            i += 1
+            let viewportPoint = CGPoint(x: (1 - point.x) * 1920, y: point.y * 1440)
+            let placement = frame.camera.unprojectPoint(viewportPoint, ontoPlane: plane!.transform, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
+            if(placement != nil){
+                var transform = simd_float4x4(1)
+                transform.columns.3.x = placement!.x
+                transform.columns.3.y = placement!.y
+                transform.columns.3.z = placement!.z
+        
+                let anchor = ARAnchor(name: "parabola", transform: transform)
+                parabolaAnchors.append(anchor)
+            }else {
+                print("failed to project: ",i)
+            }
+        }
+        return parabolaAnchors
+    }
+    
     func createPlaneAnchor(fromMatrix: simd_float4x4, toMatrix:simd_float4x4)->ARAnchor{
-        let anchor = ARAnchor(name: "boundingbox", transform: CreatePlaneTransform(fromMatrix,toMatrix))
+        let anchor = ARAnchor(name: "plane", transform: CreatePlaneTransform(fromMatrix,toMatrix))
         return anchor
     }
 
@@ -173,16 +229,21 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         let placement = simd_float3(x: (anchor.transform.columns.3.x), y: (anchor.transform.columns.3.y), z: (anchor.transform.columns.3.z))
         let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
         
-        var y =  1440 - pixelPlacement.y
-        y = y/1440
-        var x = pixelPlacement.x/1920
+        if pixelPlacement.x>1920 || pixelPlacement.x < 0 || pixelPlacement.y > 1440 || pixelPlacement.y < 0 {
+            return nil
+        }
+        
+        var y = pixelPlacement.y/1440
+        var x = (1920 - pixelPlacement.x)/1920
         y = y - 0.05
         x = x - 0.05
         
         let rect = CGRect(x: x, y: y, width: 0.1, height: 0.1)
-        if rect.minX>0 && rect.maxX<1 && rect.minY>0 && rect.maxY<1{
-            return rect
-        }else {return nil}
+        
+        print(rect)
+        
+        return rect
+      
     }
 
     // MARK: Matrix manipulation

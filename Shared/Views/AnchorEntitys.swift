@@ -29,15 +29,21 @@ class CreatAnchorEntity{
             let material = SimpleMaterial(color: .blue, isMetallic: true)
             let diceEntity = ModelEntity(mesh: box, materials: [material])
             entity.addChild(diceEntity)
-        case "boundingbox":
-            entity.name = "boundingbox"
-            let box = MeshResource.generatePlane(width: 0.03, depth: 0.03)
+        case "plane":
+            entity.name = "plane"
+            let box = MeshResource.generatePlane(width: 0.3, depth: 0.3)
             let material = SimpleMaterial(color: .blue, isMetallic: false)
             let diceEntity = ModelEntity(mesh: box, materials: [material])
             entity.addChild(diceEntity)
+        case "parabola":
+            entity.name = "parabola"
+            let ball = MeshResource.generateSphere(radius: 0.01)
+            let material = SimpleMaterial(color: .yellow, isMetallic: false)
+            let point = ModelEntity(mesh: ball, materials: [material])
+            entity.addChild(point)
         default:
             let box = MeshResource.generateBox(size: 0.02, cornerRadius: 0.05)
-            let material = SimpleMaterial(color: .blue, isMetallic: true)
+            let material = SimpleMaterial(color: .magenta, isMetallic: true)
             let diceEntity = ModelEntity(mesh: box, materials: [material])
             entity.addChild(diceEntity)
         }
