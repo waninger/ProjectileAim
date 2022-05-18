@@ -23,7 +23,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     var savedTimestamps = [TimeInterval]()
     var pointsFromTracking = [CGPoint]()
     var recording = false
-
+    
     private override init() {
         super.init()
     }
@@ -74,7 +74,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             DispatchQueue.global(qos: .userInitiated).async {
                 if(self.savedPixelBuffer.count < 420) {
-                    
                     var _copy: CVPixelBuffer?
                     
                     CVPixelBufferCreate(
@@ -111,7 +110,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                     let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
                     
                     print("SAVED: ", buf)
-                    print("COUNT: ", self.savedPixelBuffer.count)
+                    //print("COUNT: ", self.savedPixelBuffer.count)
                 
                 }
             }
@@ -140,7 +139,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
         // MARK: anchor management
         // adding new anchors to view
-        if !newAnchors.isEmpty { newAnchors.removeAll()}
+        //if !newAnchors.isEmpty { newAnchors.removeAll()}
         
         
         //points to anchor
@@ -175,7 +174,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     
     //MARK: World setup and anchors
     func addPointsToWorld(frame:ARFrame, points:[CGPoint])->[ARAnchor]{
-        let plane = anchors.last(where: { $0.name == "plane" })
+        let plane = frame.anchors.last(where: { $0.name == "plane" })
         var i = 0
         var parabolaAnchors = [ARAnchor]()
         points.forEach { point in

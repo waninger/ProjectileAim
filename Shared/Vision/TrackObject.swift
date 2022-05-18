@@ -37,7 +37,7 @@ class TrackObject {
         let requestHandler = VNSequenceRequestHandler()
         
         for frame in frames! {
-            print(frames?.firstIndex(of: frame)!)
+            //print(frames?.firstIndex(of: frame)!)
             var trackingRequests = [VNRequest]()
             
             lazy var request: VNTrackingRequest = {
@@ -55,57 +55,16 @@ class TrackObject {
             
             var result = trackingRequests.first?.results as? [VNDetectedObjectObservation]
             if result != nil {
-                print(result!.first)
+                //print(result!.first)
                 let point = CGPoint(x: (result?.first?.boundingBox.midX)!, y: (result?.first?.boundingBox.midY)!)
+                inputObservations = (result?.first)!
                 trackedPoints.append(point)
             } else {
                 let point = CGPoint(x: 0, y: 0)
                 trackedPoints.append(point)
             }
             
-        
-            inputObservations = (result?.first)!
         }        
     }
-    /*
-    var results: [VNDetectedObjectObservation]?
-    var inputObservations = [UUID: VNDetectedObjectObservation]()
-    let requestHandler = VNSequenceRequestHandler()
-    var trackingLevel = VNRequestTrackingLevel.fast
-    var observation : VNDetectedObjectObservation?
-    var point:CGPoint?
-    var pixelBuffer = [CVPixelBuffer]()
-    var timeIntervals = [TimeInterval]()
-    var objectToTrack = CGRect()
-
-    
-    func setObservationRect(rect:CGRect){
-        print(rect, rect.minX, rect.maxX, rect.minY, rect.maxY )
-        if rect.minX>0 && rect.maxX<1920 && rect.minY>0 && rect.maxY<1440{
-            print("set box")
-            observation = VNDetectedObjectObservation(boundingBox: rect)
-            point = rect.origin
-        }
-    }
-
-    func trackObject(buffer:CVPixelBuffer){
-        if observation != nil {
-            var requests = [VNRequest]()
-            
-            lazy var request: VNTrackingRequest = {
-                let trackingRequest = VNTrackObjectRequest(detectedObjectObservation: observation!)
-                return trackingRequest
-            }()
-            requests.append(request)
-            
-            do {
-                try requestHandler.perform(requests, on: buffer)
-                } catch {
-                    print(error)
-            }
-            results = request.results as? [VNDetectedObjectObservation]
-            //print(results?.first)
-        }
-    }*/
 
 }

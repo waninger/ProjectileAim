@@ -37,6 +37,7 @@ import ARKit
 struct RealityKitView: UIViewRepresentable {
     private var worldConfiguration = ARWorldTrackingConfiguration()
     @StateObject var cameraData = CameraData.shared
+    var reset = Bool()
 
     func makeUIView(context: Context) -> ARView {
         setupObjectDetection()
@@ -44,34 +45,29 @@ struct RealityKitView: UIViewRepresentable {
         let view = ARView()
         let session = view.session
         session.delegate = cameraData
-        
-        
+                
         let coachingOverlay = ARCoachingOverlayView()
         coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
         
-        cameraData.anchors.forEach{ anchor in
-            let anc = CreatAnchorEntity.CreateEntity(anchor: anchor)
-            print("initial setup")
-            view.scene.addAnchor(anc)
-        }
+
         session.run(worldConfiguration)
        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
         
-        let newAnchors = cameraData.newAnchors
-        if newAnchors.isEmpty != true {
-            newAnchors.forEach{ newAnchor in
-                //print("new entity added name: ", newAnchor.name )
-                //print("placement", newAnchor.transform)
-                let entity = CreatAnchorEntity.CreateEntity(anchor: newAnchor)
+        if cameraData.newAnchors.count > 0{
+            let anchor = cameraData.newAnchors.removeFirst()
+            let entity = CreatAnchorEntity.CreateEntity(anchor: anchor)
                 view.scene.addAnchor(entity)
-            }
         }
+        if(reset) {
+            reset(view: view)
+        }
+        
     }
     
     private func setupObjectDetection() {
@@ -83,21 +79,33 @@ struct RealityKitView: UIViewRepresentable {
         worldConfiguration.detectionObjects = referenceObjects
         worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
     }
-
+    
+    func reset(view: ARView){
+        view.session.currentFrame?.anchors.forEach { anchor in
+            if anchor.name == "parabola" {
+                view.session.remove(anchor: anchor)
+                }
+        }
+        for index in  0 ... view.scene.anchors.count{
+            if view.scene.anchors[index].name == "parabola"{
+                view.scene.removeAnchor(view.scene.anchors[index])
+            }
+        }
+    }
 }
 
 
 struct ContentView: View {
-
-    
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
-      
-      VStack(alignment: .leading) {
-                  Button("START") {
-                      CameraData.shared.startRecording()
-                  }
+      Button("START") {
+          CameraData.shared.startRecording()
+      }.contentShape(Rectangle())
+          .background(.cyan)
+          .controlSize(.large)
+      Button("RESET") {
+          RealityKitView().reset = true
       }
   }
 }
