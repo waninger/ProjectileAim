@@ -290,16 +290,10 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     }
     
     // MARK: Calculations
-    func calculateDistance(frame:ARFrame){
-        let cx = frame.camera.transform.columns.3[0]
-        let cy = frame.camera.transform.columns.3[1]
-        let cz = frame.camera.transform.columns.3[2]
-        frame.anchors.forEach { anchor in
-            let ax = anchor.transform.columns.3[0]
-            let ay = anchor.transform.columns.3[1]
-            let az = anchor.transform.columns.3[2]
-            let distance = sqrt(pow(ax-cx,2)+pow(ay-cy,2)+pow(az-cz,2))
-        }
+    func calculateDistance(anchorA: ARAnchor, anchorB: ARAnchor)->Float{
+        let difference = (anchorA.transform.columns.3 - anchorB.transform.columns.3)
+        let distance = sqrtf( powf(difference.x, 2) + powf(difference.y, 2) + powf(difference.z, 2))
+        return distance
     }
 }
 
