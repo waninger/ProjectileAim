@@ -14,15 +14,17 @@ import SceneKit
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     //@Published var anchors = [ARAnchor]()
-    @Published var parabolaAnchors = [ARAnchor]()
+    var parabolaAnchors = [ARAnchor]()
     @Published var newAnchors = [ARAnchor]()
-    @Published var planeAnchor:ARAnchor?
+    var planeAnchor:ARAnchor?
     var anchorCount = 0
-    private let trackObject = TrackObject()
+    private var trackObject = TrackObject()
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
     var pointsFromTracking = [CGPoint]()
     var recording = false
+    var reset = false
+    @Published var viewText = "text from cameradata"
     
     private override init() {
         super.init()
@@ -30,6 +32,14 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     
     func startRecording() {
         recording = true
+    }
+    
+    
+    func resetValues() {
+        print("in reset to change text")
+        viewText = "text change"
+        trackObject = TrackObject()
+        reset = true
     }
     
     func checkSavedValues() {
@@ -52,7 +62,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                let anchor = frame.anchors.last(where: { $0.name == "boll" })
+                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -109,8 +119,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                         
                     let buf = CVPixelBufferGetWidth(self.savedPixelBuffer.last!)
                     
-                    print("SAVED: ", buf)
-                    //print("COUNT: ", self.savedPixelBuffer.count)
+                    //print("SAVED: ", buf)
+                    print("COUNT: ", self.savedPixelBuffer.count)
                 
                 }
             }
@@ -132,16 +142,27 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             group.notify(queue:.main) {
                 self.pointsFromTracking = self.trackObject.trackedPoints
+                print(self.pointsFromTracking.count)
             }
             savedPixelBuffer.removeAll()
             savedTimestamps.removeAll()
         }
         
+        //reset
+        if reset && !recording {
+            session.currentFrame?.anchors.forEach{ anchor in
+                if anchor.name == "parabola"{
+                    session.remove(anchor: anchor)
+                }
+            }
+            print("anchor count: ",anchorCount, frame.anchors.count)
+            trackObject = TrackObject()
+            savedPixelBuffer.removeAll()
+            savedTimestamps.removeAll()
+            reset = false
+        }
+        
         // MARK: anchor management
-        // adding new anchors to view
-        //if !newAnchors.isEmpty { newAnchors.removeAll()}
-        
-        
         //points to anchor
         if !pointsFromTracking.isEmpty {
             var points = [CGPoint]()
@@ -157,7 +178,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             parabolaAnchors.removeAll()
         }
         
-        
+        //acnhor to view
         if anchorCount < frame.anchors.count{
             for count in anchorCount ..< frame.anchors.count{
                 newAnchors.append(frame.anchors[count])
@@ -168,7 +189,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 session.add(anchor: planeAnchor!)
             }
             anchorCount = frame.anchors.count
-        }
+        }else if anchorCount > frame.anchors.count { anchorCount = frame.anchors.count}
+            
     }
     
     

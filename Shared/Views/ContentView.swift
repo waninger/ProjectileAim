@@ -37,12 +37,12 @@ import ARKit
 struct RealityKitView: UIViewRepresentable {
     private var worldConfiguration = ARWorldTrackingConfiguration()
     @StateObject var cameraData = CameraData.shared
-    var reset = Bool()
 
     func makeUIView(context: Context) -> ARView {
         setupObjectDetection()
         
         let view = ARView()
+        
         let session = view.session
         session.delegate = cameraData
                 
@@ -52,7 +52,6 @@ struct RealityKitView: UIViewRepresentable {
         coachingOverlay.goal = .horizontalPlane
         view.addSubview(coachingOverlay)
         
-
         session.run(worldConfiguration)
        return view
     }
@@ -64,10 +63,6 @@ struct RealityKitView: UIViewRepresentable {
             let entity = CreatAnchorEntity.CreateEntity(anchor: anchor)
                 view.scene.addAnchor(entity)
         }
-        if(reset) {
-            reset(view: view)
-        }
-        
     }
     
     private func setupObjectDetection() {
@@ -79,34 +74,24 @@ struct RealityKitView: UIViewRepresentable {
         worldConfiguration.detectionObjects = referenceObjects
         worldConfiguration.frameSemantics = [.sceneDepth, .smoothedSceneDepth]
     }
-    
-    func reset(view: ARView){
-        view.session.currentFrame?.anchors.forEach { anchor in
-            if anchor.name == "parabola" {
-                view.session.remove(anchor: anchor)
-                }
-        }
-        for index in  0 ... view.scene.anchors.count{
-            if view.scene.anchors[index].name == "parabola"{
-                view.scene.removeAnchor(view.scene.anchors[index])
-            }
-        }
-    }
 }
 
 
 struct ContentView: View {
+    @State private var text: String = CameraData.shared.viewText
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
       Button("START") {
+          print("start recording")
           CameraData.shared.startRecording()
-      }.contentShape(Rectangle())
-          .background(.cyan)
-          .controlSize(.large)
-      Button("RESET") {
-          RealityKitView().reset = true
       }
+      
+      Button("RESET") {
+          CameraData.shared.resetValues()
+      }
+      
+      Text(text)
   }
 }
 
