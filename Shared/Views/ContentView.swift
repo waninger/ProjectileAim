@@ -60,8 +60,16 @@ struct RealityKitView: UIViewRepresentable {
         
         if cameraData.newAnchors.count > 0{
             let anchor = cameraData.newAnchors.removeFirst()
-            let entity = CreatAnchorEntity.CreateEntity(anchor: anchor)
+            let entity: AnchorEntity
+            if anchor.name == "text" {
+                print("TIME ENTITY")
+                var time = String(cameraData.savedTimestamps.removeFirst())
+                entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: time)
                 view.scene.addAnchor(entity)
+            } else {
+                entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: nil)
+                view.scene.addAnchor(entity)
+            }
         }
     }
     
@@ -78,7 +86,7 @@ struct RealityKitView: UIViewRepresentable {
 
 
 struct ContentView: View {
-    @State private var text: String = CameraData.shared.viewText
+
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
@@ -90,13 +98,11 @@ struct ContentView: View {
       Button("RESET") {
           CameraData.shared.resetValues()
       }
-      
-      Text(text)
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+      ContentView()
   }
 }
