@@ -13,7 +13,7 @@ import SceneKit
 
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
-    //@Published var anchors = [ARAnchor]()
+
     var parabolaAnchors = [ARAnchor]()
     @Published var newAnchors = [ARAnchor]()
     var planeAnchor:ARAnchor?
@@ -22,9 +22,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
     var pointsFromTracking = [CGPoint]()
+    var lastViableProjecktedPoint:ARAnchor?
     var recording = false
     var reset = false
-    @Published var viewText = "text from cameradata"
     
     private override init() {
         super.init()
@@ -167,6 +167,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if !pointsFromTracking.isEmpty {
             var points = [CGPoint]()
             points.append(pointsFromTracking.removeFirst())
+            if(lastViableProjecktedPoint == nil){lastViableProjecktedPoint = addPointsToWorld(frame: frame, points: points).first }
             parabolaAnchors.append(contentsOf: addPointsToWorld(frame: frame, points: points))
         }
         
