@@ -53,7 +53,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
+                let anchor = frame.anchors.last(where: { $0.name == "horse" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -150,6 +150,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             points.append(pointsFromTracking.removeFirst())
         
             let anchors = addPointsToWorld(frame: frame, points: points)
+            
             if anchors.isEmpty {
             savedTimestamps.removeFirst()
             } else {
@@ -157,9 +158,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             }
             
             if pointsFromTracking.isEmpty {
-                var snchor = createTextAnchor(frame: frame)
-                print(snchor.name)
-                session.add(anchor: snchor)
+                var textAnchor = createTextAnchor(frame: frame)
+                print(textAnchor.name)
+                session.add(anchor: textAnchor)
             }
         }
  
@@ -170,7 +171,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 print(frame.anchors[count].name)
             }
             // om vi har hittat både boll och mål skapa plan
-            if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
+            if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "horse" }) != nil ){
                 planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
                 session.add(anchor: planeAnchor!)
             }

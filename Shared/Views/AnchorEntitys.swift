@@ -18,6 +18,12 @@ class CreatAnchorEntity{
 
         switch anchor.name{
  
+        case "horse":
+            entity.name = "horse"
+            let box = MeshResource.generateBox(width: 0.01, height: 0.01, depth: 0.03)
+            let material = SimpleMaterial(color: .orange,isMetallic: false)
+            let diceEntity = ModelEntity(mesh: box, materials: [material])
+            entity.addChild(diceEntity)
         case "mugg":
             entity.name = "mugg"
             let box = MeshResource.generateBox(width: 0.01, height: 0.01, depth: 0.03)
