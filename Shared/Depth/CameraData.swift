@@ -9,6 +9,7 @@ import Foundation
 import ARKit
 import UIKit
 import SceneKit
+import SwiftUI
 
 
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
@@ -23,7 +24,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
     var pointsFromTracking = [CGPoint]()
-    var lastViableProjecktedPoint:ARAnchor?
     var recording = false
     var reset = false
     
@@ -39,7 +39,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     
     func resetValues() {
         print("in reset to change text")
-        viewText = "text change"
         trackObject = TrackObject()
         reset = true
     }
@@ -145,6 +144,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             group.notify(queue:.main) {
                 self.pointsFromTracking = self.trackObject.trackedPoints
+                let anchors = self.addPointsToWorld(frame: frame, points: self.pointsFromTracking)
+                self.parabolaAnchors.append(contentsOf: anchors)
                 print(self.pointsFromTracking.count)
             }
             savedPixelBuffer.removeAll()
@@ -167,28 +168,19 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
 
         // MARK: anchor management
-        //points to anchor
-
         //Create 3D anchor from 2D point. One for each frame, not all at the same time, to ease processor
         //Add new anchor, created from 2D points, to the current session. This triggers the view which then draws the parabola.
-        if !pointsFromTracking.isEmpty {
-            var points = [CGPoint]()
-            points.append(pointsFromTracking.removeFirst())
         
-            let anchors = addPointsToWorld(frame: frame, points: points)
-            
-            if anchors.isEmpty {
-            savedTimestamps.removeFirst()
-            } else {
-                    session.add(anchor: anchors.first!)
-            }
-            
-            if pointsFromTracking.isEmpty {
+        if !parabolaAnchors.isEmpty {
+            // rensa parabola anchors
+            newAnchors.append(parabolaAnchors.removeFirst())
+            if parabolaAnchors.isEmpty {
+                // hämta alla tidsstämplar
                 var textAnchor = createTextAnchor(frame: frame)
                 print(textAnchor.name)
                 session.add(anchor: textAnchor)
             }
-_--
+        }
         if anchorCount < frame.anchors.count{
             for count in anchorCount ..< frame.anchors.count{
                 newAnchors.append(frame.anchors[count])
@@ -201,7 +193,6 @@ _--
             }
             anchorCount = frame.anchors.count
         }else if anchorCount > frame.anchors.count { anchorCount = frame.anchors.count}
-            
     }
     
     func createTextAnchor(frame: ARFrame)  -> ARAnchor {
@@ -214,6 +205,25 @@ _--
     
     
     //MARK: World setup and anchors
+    func worldToView(frame: ARFrame, anchor: ARAnchor) -> CGRect?{
+        let placement = simd_float3(x: (anchor.transform.columns.3.x), y: (anchor.transform.columns.3.y), z: (anchor.transform.columns.3.z))
+        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
+        
+        if pixelPlacement.x>1920 || pixelPlacement.x < 0 || pixelPlacement.y > 1440 || pixelPlacement.y < 0 {
+            return nil
+        }
+        
+        var y = pixelPlacement.y/1440
+        var x = (1920 - pixelPlacement.x)/1920
+        y = y - 0.05
+        x = x - 0.05
+        
+        let rect = CGRect(x: x, y: y, width: 0.1, height: 0.1)
+        
+        print(rect)
+        return rect
+    }
+    
     func addPointsToWorld(frame:ARFrame, points:[CGPoint])-> [ARAnchor]{
         let plane = frame.anchors.last(where: { $0.name == "plane" })
         var i = 0
@@ -236,7 +246,18 @@ _--
         }
         return parabolaAnchors
     }
+    func filterParabolaPoints(anchors: [ARAnchor], timestamps:[TimeInterval]){
+        var lastViableAnchor = anchors.first
+        var timestamp = savedTimestamps.first
+        var filterdPoints = [ARAnchor]()
+        var speeds = [Float]()
+        
+        for count in 1 ... anchors.count {
+        }
+        
+    }
     
+    //MARK: Plane creation
     func createPlaneAnchor(fromMatrix: simd_float4x4, toMatrix:simd_float4x4)->ARAnchor{
         let anchor = ARAnchor(name: "plane", transform: CreatePlaneTransform(fromMatrix,toMatrix))
         return anchor
@@ -250,27 +271,6 @@ _--
         transform = rotateY(matrix: transform, RadAngle: angle)
         transform = rotateX(matrix: transform, RadAngle: -Float.pi/2)
         return transform
-    }
-    
-    func worldToView(frame: ARFrame, anchor: ARAnchor) -> CGRect?{
-        let placement = simd_float3(x: (anchor.transform.columns.3.x), y: (anchor.transform.columns.3.y), z: (anchor.transform.columns.3.z))
-        let pixelPlacement = frame.camera.projectPoint(placement, orientation: .landscapeLeft, viewportSize: frame.camera.imageResolution)
-        
-        if pixelPlacement.x>1920 || pixelPlacement.x < 0 || pixelPlacement.y > 1440 || pixelPlacement.y < 0 {
-            return nil
-        }
-        
-        var y = pixelPlacement.y/1440
-        var x = (1920 - pixelPlacement.x)/1920
-        y = y - 0.05
-        x = x - 0.05
-        
-        let rect = CGRect(x: x, y: y, width: 0.1, height: 0.1)
-        
-        print(rect)
-        
-        return rect
-      
     }
 
     // MARK: Matrix manipulation
