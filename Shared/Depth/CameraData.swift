@@ -64,7 +64,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             if(savedPixelBuffer.isEmpty) {
                 
 
-                let anchor = frame.anchors.last(where: { $0.name == "horse" })
+                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -146,7 +146,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 self.pointsFromTracking = self.trackObject.trackedPoints
                 let anchors = self.addPointsToWorld(frame: frame, points: self.pointsFromTracking)
                 self.parabolaAnchors.append(contentsOf: anchors)
-                print(self.pointsFromTracking.count)
+                let res = self.filterParabolaPoints(anchors: self.parabolaAnchors, timestamps: self.savedTimestamps)
+                print(res.0.count, res.1[2])
             }
             savedPixelBuffer.removeAll()
             //savedTimestamps.removeAll()
@@ -173,23 +174,26 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
         if !parabolaAnchors.isEmpty {
             // rensa parabola anchors
-            newAnchors.append(parabolaAnchors.removeFirst())
+            session.add(anchor: parabolaAnchors.removeFirst())
             if parabolaAnchors.isEmpty {
                 // hämta alla tidsstämplar
-                var textAnchor = createTextAnchor(frame: frame)
+                let textAnchor = createTextAnchor(frame: frame)
                 print(textAnchor.name)
                 session.add(anchor: textAnchor)
             }
         }
+        
+        // om vi har hittat både boll och mål skapa plan
+        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
+            planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
+            session.add(anchor: planeAnchor!)
+        }
+        
+        // anchors to view
         if anchorCount < frame.anchors.count{
             for count in anchorCount ..< frame.anchors.count{
                 newAnchors.append(frame.anchors[count])
                 print(frame.anchors[count].name)
-            }
-            // om vi har hittat både boll och mål skapa plan
-            if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "horse" }) != nil ){
-                planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-                session.add(anchor: planeAnchor!)
             }
             anchorCount = frame.anchors.count
         }else if anchorCount > frame.anchors.count { anchorCount = frame.anchors.count}
@@ -199,7 +203,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         var transform = frame.camera.transform
         transform.columns.3 -= 2
          let anchor = ARAnchor(name: "text", transform: transform)
-        print("in EMPTY .. . . .", anchor.name)
+        print("creating textanchor", anchor.name)
         return anchor
     }
     
@@ -246,15 +250,21 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         }
         return parabolaAnchors
     }
-    func filterParabolaPoints(anchors: [ARAnchor], timestamps:[TimeInterval]){
-        var lastViableAnchor = anchors.first
-        var timestamp = savedTimestamps.first
+    func filterParabolaPoints(anchors: [ARAnchor], timestamps:[TimeInterval]) -> ([ARAnchor],[Float]){
         var filterdPoints = [ARAnchor]()
+        filterdPoints.append(anchors.first!)
         var speeds = [Float]()
-        
-        for count in 1 ... anchors.count {
+        speeds.append(0)
+        for count in 1 ... anchors.count { // kanske -1
+            let distance = calculateDistance(anchorA: filterdPoints.last!, anchorB: anchors[count])
+            if distance > 0.1{
+                filterdPoints.append(anchors[count])
+                let speed = (distance / Float(timestamps[count]-timestamps[count-1]) * 1000)
+                print(speed)
+                speeds.append(speed)
+            }
         }
-        
+        return (filterdPoints,speeds)
     }
     
     //MARK: Plane creation
