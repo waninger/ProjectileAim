@@ -14,7 +14,6 @@ class CreatAnchorEntity{
     static func CreateEntity(anchor:ARAnchor, timeStamp: String?)->AnchorEntity{
 
         let entity = AnchorEntity(anchor: anchor)
-        
 
         switch anchor.name{
  
@@ -38,10 +37,18 @@ class CreatAnchorEntity{
             entity.addChild(diceEntity)
         case "plane":
             entity.name = "plane"
-            let box = MeshResource.generatePlane(width: 0.3, depth: 0.3)
+            let plane = MeshResource.generatePlane(width: 0.3, depth: 0.3)
             let material = SimpleMaterial(color: .blue, isMetallic: false)
-            let diceEntity = ModelEntity(mesh: box, materials: [material])
+            let diceEntity = ModelEntity(mesh: plane, materials: [material])
             entity.addChild(diceEntity)
+            print("adding plane")
+        case "goalPlane":
+            entity.name = "goalPlane"
+            let plane = MeshResource.generatePlane(width: 0.3, depth: 0.3)
+            let material = SimpleMaterial(color: .blue, isMetallic: false)
+            let diceEntity = ModelEntity(mesh: plane, materials: [material])
+            entity.addChild(diceEntity)
+            print("adding goalplane")
         case "parabola":
             entity.name = "parabola"
             let ball = MeshResource.generateSphere(radius: 0.01)
@@ -49,10 +56,9 @@ class CreatAnchorEntity{
             let point = ModelEntity(mesh: ball, materials: [material])
             entity.addChild(point)
         case "text":
-            print("Addind entity to view")
             entity.name = "text"
-            let text = MeshResource.generateText(timeStamp!, extrusionDepth: 0.001, font: MeshResource.Font.systemFont(ofSize: 0.01), containerFrame: CGRect(x: 0, y: 0, width: 0.05, height: 0.05), alignment: .center, lineBreakMode: .byCharWrapping)
-            let material = SimpleMaterial(color: .magenta, isMetallic: true)
+            let text = MeshResource.generateText(timeStamp!, extrusionDepth: 0.001, font: MeshResource.Font.systemFont(ofSize: 0.02), containerFrame: CGRect.zero, alignment: .center, lineBreakMode: .byCharWrapping)
+            let material = SimpleMaterial(color: .magenta, isMetallic: false)
             let textEntity = ModelEntity(mesh: text, materials: [material])
             entity.addChild(textEntity)
         default:

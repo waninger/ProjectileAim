@@ -60,10 +60,14 @@ struct RealityKitView: UIViewRepresentable {
         
         if cameraData.newAnchors.count > 0{
             let anchor = cameraData.newAnchors.removeFirst()
+            view.session.add(anchor: anchor)
             let entity: AnchorEntity
             if anchor.name == "text" {
-                print("TIME ENTITY")
-                var time = String(cameraData.savedTimestamps.removeFirst())
+                var time = ""
+                cameraData.speeds.forEach{ speed in
+                    time.append(String(speed) + "\n")
+                }
+                print("timestring: ", time)
                 entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: time)
                 view.scene.addAnchor(entity)
             } else {
