@@ -47,7 +47,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                let anchor = frame.anchors.last(where: { $0.name == "boll" })
+                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -148,12 +148,12 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         // MARK: anchor management
 
         // om vi har hittat både boll och mål skapa plan
-        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "boll" }) != nil ){
+        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
             planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 1.6)
+            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 2)
             newAnchors.append(planeAnchor!)
             newAnchors.append(goalPlaneAnchor!)
-            newAnchors.append(frame.anchors.last(where: { $0.name == "boll" })!)
+            newAnchors.append(frame.anchors.last(where: { $0.name == "mugg" })!)
         }
         
         if !pointsFromTracking.isEmpty {
@@ -162,13 +162,14 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             let filterdPoints = filterParabolaPoints(anchors: parabolaAnchors, timestamps: savedTimestamps)
             
-            speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
-            
-            let goalP = goalPoint(frame: frame, speeds: speeds, distance: 1.6, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
-            
-            newAnchors.append(contentsOf: filterdPoints.0)
-            newAnchors.append(goalP!)
-            newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
+            // if filterd points are to few reset
+            if filterdPoints.0.count > 10 {
+                speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
+                let goalP = goalPoint(frame: frame, speeds: speeds, distance: 2, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
+                newAnchors.append(contentsOf: filterdPoints.0)
+                newAnchors.append(goalP!)
+                newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
+            } else { reset = true }
             pointsFromTracking.removeAll()
         }
     }
