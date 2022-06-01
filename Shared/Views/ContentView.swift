@@ -37,6 +37,7 @@ import ARKit
 struct RealityKitView: UIViewRepresentable {
     private var worldConfiguration = ARWorldTrackingConfiguration()
     @StateObject var cameraData = CameraData.shared
+   
 
     func makeUIView(context: Context) -> ARView {
         setupObjectDetection()
@@ -74,6 +75,7 @@ struct RealityKitView: UIViewRepresentable {
                 entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: nil)
                 view.scene.addAnchor(entity)
             }
+            
         }
     }
     
@@ -90,12 +92,15 @@ struct RealityKitView: UIViewRepresentable {
 
 
 struct ContentView: View {
-
+    var fileManager = FileManager()
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
       Button("START") {
           print("start recording")
+          let fileName = "test.txt"
+          fileManager.save(text: "tes tes test", toDirectory: fileManager.documentDirectory(), withFileName: fileName)
+          fileManager.read(fromDocumentsWithFileName: fileName)
           CameraData.shared.startRecording()
       }
       

@@ -42,6 +42,7 @@
 		C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
 		C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
 		C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
+		C3A4E8552847641900F1E4E9 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A4E8542847641900F1E4E9 /* FileManager.swift */; };
 		C3CB44FC28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
 		C3CB44FD28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
 /* End PBXBuildFile section */
@@ -89,6 +90,7 @@
 		C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
 		C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		C3A4E8542847641900F1E4E9 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		C3CB44FB28227AAD00129597 /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +148,7 @@
 		AFAF93F527F3357B002EFFBA /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C3A4E8532847640500F1E4E9 /* File */,
 				AF93960227FDD50E0086B95A /* Depth */,
 				C32CE82C27FD7EFC001D6EDC /* Camera */,
 				C32CE82827FD7EFC001D6EDC /* Extensions */,
@@ -242,6 +245,14 @@
 				C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C3A4E8532847640500F1E4E9 /* File */ = {
+			isa = PBXGroup;
+			children = (
+				C3A4E8542847641900F1E4E9 /* FileManager.swift */,
+			);
+			path = File;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,6 +422,7 @@
 				C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */,
 				C32CE84027FD7EFC001D6EDC /* TrackParabola.swift in Sources */,
 				C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */,
+				C3A4E8552847641900F1E4E9 /* FileManager.swift in Sources */,
 				AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
 				C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
 				C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */,
