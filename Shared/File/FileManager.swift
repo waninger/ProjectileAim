@@ -41,7 +41,7 @@ class FileManager {
             print("Error reading file")
         }
     }
-    public func save(text: String,
+    public func save(text: [Float],
                      toDirectory directory: String,
                      withFileName fileName: String) {
         guard let filePath = self.append(toPath: directory, withPathComponent: fileName) else {
@@ -49,9 +49,11 @@ class FileManager {
         }
         
         do {
-            try text.write(toFile: filePath,
-                           atomically: true,
-                           encoding: .utf8)
+            try (text as NSArray).write(toFile: filePath, atomically: false)
+            
+                             /* string.write(toFile: filePath,
+                                        atomically: true,
+                                        encoding: .utf8)*/
             
         } catch {
             print("Error", error)

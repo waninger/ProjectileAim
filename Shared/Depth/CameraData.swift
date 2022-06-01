@@ -173,8 +173,8 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 
                 // MARK: Save to File testing
                 
-                let fileName = "test2.txt"
-                fileManager.save(text: "Det var en gång en liten apa", toDirectory: fileManager.documentDirectory(), withFileName: fileName)
+                let fileName = "test3.txt"
+                fileManager.save(text: speeds, toDirectory: fileManager.documentDirectory(), withFileName: fileName)
                 fileManager.read(fromDocumentsWithFileName: fileName)
                 
             } else { reset = true }
