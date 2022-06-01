@@ -58,7 +58,7 @@ struct RealityKitView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: ARView, context: Context) {
-        
+       
         if cameraData.newAnchors.count > 0{
             let anchor = cameraData.newAnchors.removeFirst()
             view.session.add(anchor: anchor)
@@ -92,15 +92,12 @@ struct RealityKitView: UIViewRepresentable {
 
 
 struct ContentView: View {
-    var fileManager = FileManager()
+   
   var body: some View {
       RealityKitView()
           .ignoresSafeArea()
       Button("START") {
           print("start recording")
-          let fileName = "test.txt"
-          fileManager.save(text: "tes tes test", toDirectory: fileManager.documentDirectory(), withFileName: fileName)
-          fileManager.read(fromDocumentsWithFileName: fileName)
           CameraData.shared.startRecording()
       }
       

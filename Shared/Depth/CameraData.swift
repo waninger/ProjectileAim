@@ -15,6 +15,7 @@ import SwiftUI
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     private var trackObject = TrackObject()
+    var fileManager = FileManager()
     @Published var newAnchors = [ARAnchor]()
     
     var parabolaAnchors = [ARAnchor]()
@@ -47,7 +48,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
+                let anchor = frame.anchors.last(where: { $0.name == "boll" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -148,12 +149,12 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         // MARK: anchor management
 
         // om vi har hittat både boll och mål skapa plan
-        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
+        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "boll" }) != nil ){
             planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 2)
+            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 0.5)
             newAnchors.append(planeAnchor!)
             newAnchors.append(goalPlaneAnchor!)
-            newAnchors.append(frame.anchors.last(where: { $0.name == "mugg" })!)
+            newAnchors.append(frame.anchors.last(where: { $0.name == "boll" })!)
         }
         
         if !pointsFromTracking.isEmpty {
@@ -169,6 +170,13 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 newAnchors.append(contentsOf: filterdPoints.0)
                 newAnchors.append(goalP!)
                 newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
+                
+                // MARK: Save to File testing
+                
+                let fileName = "test2.txt"
+                fileManager.save(text: "Det var en gång en liten apa", toDirectory: fileManager.documentDirectory(), withFileName: fileName)
+                fileManager.read(fromDocumentsWithFileName: fileName)
+                
             } else { reset = true }
             pointsFromTracking.removeAll()
         }
