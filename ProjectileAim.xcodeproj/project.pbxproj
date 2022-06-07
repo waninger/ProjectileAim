@@ -21,7 +21,6 @@
 		AFAF942227F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFAF942327F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFB8C21328475C2B004E3C82 /* captureVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB8C21228475C2B004E3C82 /* captureVideo.swift */; };
-		AFB8C215284A05C2004E3C82 /* ToVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB8C214284A05C2004E3C82 /* ToVideo.swift */; };
 		C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
 		C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
 		C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */; };
@@ -82,7 +81,6 @@
 		AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		AFB8C21228475C2B004E3C82 /* captureVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = captureVideo.swift; sourceTree = "<group>"; };
-		AFB8C214284A05C2004E3C82 /* ToVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToVideo.swift; sourceTree = "<group>"; };
 		C32CE82227FD7EFC001D6EDC /* FrameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
 		C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		C32CE82427FD7EFC001D6EDC /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -135,7 +133,6 @@
 			children = (
 				AF93960327FDD5310086B95A /* CameraData.swift */,
 				AFB8C21228475C2B004E3C82 /* captureVideo.swift */,
-				AFB8C214284A05C2004E3C82 /* ToVideo.swift */,
 			);
 			path = Depth;
 			sourceTree = "<group>";
@@ -436,7 +433,6 @@
 				AF93960427FDD5310086B95A /* CameraData.swift in Sources */,
 				C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
 				C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
-				AFB8C215284A05C2004E3C82 /* ToVideo.swift in Sources */,
 				C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */,
 				C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 			);
