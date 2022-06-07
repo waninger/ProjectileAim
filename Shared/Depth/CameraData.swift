@@ -16,6 +16,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     private var trackObject = TrackObject()
     var fileManager = FileManager()
+    private let saveVideo = CaptureVideo()
     @Published var newAnchors = [ARAnchor]()
     
     var parabolaAnchors = [ARAnchor]()
@@ -114,6 +115,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if recording == true && savedPixelBuffer.count >= 420 {
             recording = false
             trackObject.setBuffer(buffer: savedPixelBuffer)
+            saveVideo.setBuffer(videoBufferIn: savedPixelBuffer)
             trackObject.setTime(times: savedTimestamps)
             
             let group = DispatchGroup()
@@ -166,6 +168,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             // if filterd points are to few reset
             if filterdPoints.0.count > 10 {
+                DispatchQueue.main.async {
+                    self.saveVideo.saveVideo(videoName: "MakeItWork", size: frame.camera.imageResolution)
+                }
                 speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
                 currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 0.5, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
                 newAnchors.append(contentsOf: filterdPoints.0)

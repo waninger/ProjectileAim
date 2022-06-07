@@ -32,7 +32,6 @@ class TrackObject {
     }
     
     func performTracking() {
-        
         var inputObservations = VNDetectedObjectObservation(boundingBox: objectToTrack!)
         let requestHandler = VNSequenceRequestHandler()
         
