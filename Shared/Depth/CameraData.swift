@@ -21,6 +21,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     var parabolaAnchors = [ARAnchor]()
     var planeAnchor:ARAnchor?
     var goalPlaneAnchor: ARAnchor?
+    var currentGoalAnchor: ARAnchor?
     
     var savedPixelBuffer = [CVPixelBuffer]()
     var savedTimestamps = [TimeInterval]()
@@ -166,22 +167,41 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             // if filterd points are to few reset
             if filterdPoints.0.count > 10 {
                 speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
-                let goalP = goalPoint(frame: frame, speeds: speeds, distance: 2, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
+                currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 0.5, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
                 newAnchors.append(contentsOf: filterdPoints.0)
-                newAnchors.append(goalP!)
+                newAnchors.append(currentGoalAnchor!)
                 newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
                 
-                // MARK: Save to File testing
-                
-                let fileName = "test3.txt"
-                fileManager.save(text: speeds, toDirectory: fileManager.documentDirectory(), withFileName: fileName)
-                fileManager.read(fromDocumentsWithFileName: fileName)
+                let parabolaValues = convertToString(points: pointsFromTracking)
+                var goalList = [Any]()
+                goalList.append(currentGoalAnchor)
+                fileHandling(list: speeds, fileName: "velocity.txt")
+                fileHandling(list: parabolaValues, fileName: "parabola.txt")
+                fileHandling(list: speeds, fileName: "goal.txt")
                 
             } else { reset = true }
             pointsFromTracking.removeAll()
         }
     }
     
+    func convertToString(points: [CGPoint]) -> [String] {
+        var result = [String]()
+        var s = String()
+        points.forEach { CGpoint in
+            s = String(Double(CGpoint.x)) + " " + String(Double(CGpoint.y))
+            result.append(s)
+            
+        }
+        return result
+    }
+    
+    // MARK: Save to File
+    func fileHandling(list: [Any], fileName: String) {
+        
+        fileManager.save(list: list,toDirectory: fileManager.documentDirectory(), withFileName: fileName)
+        fileManager.read(fromDocumentsWithFileName: fileName)
+        
+    }
     
     //MARK: World setup and anchors
     func createTextAnchor(transform: simd_float4x4)  -> ARAnchor {

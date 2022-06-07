@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ARKit
 
 class FileManager {
     
@@ -27,30 +28,43 @@ class FileManager {
         return nil
     }
     
-    public func read(fromDocumentsWithFileName fileName: String) {
+    public func read(fromDocumentsWithFileName fileName: String) -> String {
         guard let filePath = self.append(toPath: self.documentDirectory(),
                                          withPathComponent: fileName) else {
-            return
+            return ""
         }
         
         do {
             let savedString = try String(contentsOfFile: filePath)
-            
-            print(savedString)
+            return savedString
         } catch {
             print("Error reading file")
         }
+        return ""
     }
-    public func save(text: [Float],
+    
+    public func save(list: [Any]?,
                      toDirectory directory: String,
                      withFileName fileName: String) {
         guard let filePath = self.append(toPath: directory, withPathComponent: fileName) else {
             return
         }
         
-        do {
-            try (text as NSArray).write(toFile: filePath, atomically: false)
-            
+        let lastSaved = read(fromDocumentsWithFileName: fileName)
+        
+        var newList = [Any]()
+        newList.append(lastSaved)
+        newList.append("Next")
+        newList.append(list)
+        
+        (newList as NSArray).write(toFile: filePath, atomically: true)
+        
+ /*       do {
+            if(floatList != nil ) {
+                (floatList! as NSArray).write(toFile: filePath, atomically: false)
+            } else if (stringList != nil) {
+                (stringList! as NSArray).write(toFile: filePath, atomically: false)
+            }
                              /* string.write(toFile: filePath,
                                         atomically: true,
                                         encoding: .utf8)*/
@@ -58,7 +72,7 @@ class FileManager {
         } catch {
             print("Error", error)
             return
-        }
+        }*/
         
         print("Save successful")
     }
