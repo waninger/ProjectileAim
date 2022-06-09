@@ -54,7 +54,7 @@ class FileManager {
         
         var newList = [Any]()
         newList.append(lastSaved)
-        newList.append("Next")
+        newList.append(Date.now)
         newList.append(list)
         
         (newList as NSArray).write(toFile: filePath, atomically: true)
