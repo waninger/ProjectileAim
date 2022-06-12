@@ -176,7 +176,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 newAnchors.append(contentsOf: filterdPoints.0)
                 newAnchors.append(currentGoalAnchor!)
                 newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
-                
+                 
                 let parabolaValues = convertToString(points: pointsFromTracking)
                 var goalList = [Any]()
                 let distanceFromCentergoal = calculateDistance(anchorA: goalPlaneAnchor!, anchorB: currentGoalAnchor!, directional: false)
