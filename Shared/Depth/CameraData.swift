@@ -15,7 +15,7 @@ import SwiftUI
 class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     static let shared = CameraData()
     private var trackObject = TrackObject()
-    var fileManager = FileManager()
+    var fileManager = FileHandler()
     private let saveVideo = CaptureVideo()
     @Published var newAnchors = [ARAnchor]()
     
@@ -154,7 +154,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         // om vi har hittat både boll och mål skapa plan
         if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "boll" }) != nil ){
             planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 0.5)
+            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 4)
             newAnchors.append(planeAnchor!)
             newAnchors.append(goalPlaneAnchor!)
             newAnchors.append(frame.anchors.last(where: { $0.name == "boll" })!)
@@ -172,14 +172,15 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                     self.saveVideo.saveVideo(videoName: "MakeItWork", size: frame.camera.imageResolution)
                 }
                 speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
-                currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 0.5, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
+                currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 4, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
                 newAnchors.append(contentsOf: filterdPoints.0)
                 newAnchors.append(currentGoalAnchor!)
                 newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
                 
                 let parabolaValues = convertToString(points: pointsFromTracking)
                 var goalList = [Any]()
-                goalList.append(currentGoalAnchor)
+                let distanceFromCentergoal = calculateDistance(anchorA: goalPlaneAnchor!, anchorB: currentGoalAnchor!, directional: false)
+                goalList.append(distanceFromCentergoal)
                 fileHandling(list: speeds, fileName: "velocity.txt")
                 fileHandling(list: parabolaValues, fileName: "parabola.txt")
                 fileHandling(list: speeds, fileName: "goal.txt")

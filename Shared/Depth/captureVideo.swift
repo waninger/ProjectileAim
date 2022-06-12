@@ -23,15 +23,10 @@ class CaptureVideo{
     
     public func saveVideo(videoName: String, size: CGSize){
         if videoBuffer == nil { print("no buffer"); return}
-        print("in save")
         let videoURL = createURLForVideo(withName: videoName)
-        print("URL done")
         prepareWriterAndInput( size: size, videoURL: videoURL)
-              print("prepare writer")
         createVideo(images: videoBuffer!, fps: 60, size: size)
-              print("video Created")
         finishVideoRecordingAndSave()
-              print("schould be done")
     }
     
     private func createURLForVideo(withName:String) -> URL{
@@ -98,7 +93,7 @@ class CaptureVideo{
                    print("SECONDS : \(currentframeTime.seconds)")
                    print("Current frame time :: \(currentframeTime)");
                        
-                      print( self.pixelBufferAdaptor!.append(images[currentFrame], withPresentationTime: currentframeTime))
+                   self.pixelBufferAdaptor!.append(images[currentFrame], withPresentationTime: currentframeTime)
                        // increment frame
                        currentFrame += 1;
                    }
@@ -109,9 +104,6 @@ class CaptureVideo{
             self.videoInput!.markAsFinished();
             self.assetWriter?.finishWriting(completionHandler: {
                 print("output url : \(self.assetWriter?.outputURL)");
-                
-                let fileManager = FileManager.default
-                let enumerator = fileManager.enumerator(atPath: (self.assetWriter?.outputURL.path)!)
                 
                 PHPhotoLibrary.requestAuthorization({ (status) in
                     PHPhotoLibrary.shared().performChanges({

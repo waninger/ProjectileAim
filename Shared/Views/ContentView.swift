@@ -58,8 +58,7 @@ struct RealityKitView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: ARView, context: Context) {
-       
-        if cameraData.newAnchors.count > 0{
+        while cameraData.newAnchors.count > 0{
             let anchor = cameraData.newAnchors.removeFirst()
             view.session.add(anchor: anchor)
             let entity: AnchorEntity
@@ -75,7 +74,6 @@ struct RealityKitView: UIViewRepresentable {
                 entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: nil)
                 view.scene.addAnchor(entity)
             }
-            
         }
     }
     
