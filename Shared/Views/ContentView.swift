@@ -73,8 +73,10 @@ struct RealityKitView: UIViewRepresentable {
                 entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: time)
                 view.scene.addAnchor(entity)
             } else {
-                entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: nil)
-                view.scene.addAnchor(entity)
+                if anchor.name != "parabola" {
+                    entity = CreatAnchorEntity.CreateEntity(anchor: anchor, timeStamp: nil)
+                    view.scene.addAnchor(entity)
+                    }
             }
         }
     }
