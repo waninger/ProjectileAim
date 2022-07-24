@@ -54,6 +54,7 @@ class FileHandler {
         
         var newList = [Any]()
         newList.append(lastSaved)
+        newList.append("D A T E:")
         newList.append(Date.now)
         newList.append(list)
         

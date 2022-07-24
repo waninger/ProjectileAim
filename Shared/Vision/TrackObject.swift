@@ -34,9 +34,12 @@ class TrackObject {
     func performTracking() {
         var inputObservations = VNDetectedObjectObservation(boundingBox: objectToTrack!)
         let requestHandler = VNSequenceRequestHandler()
+        print(frames?.count)
         
         for frame in frames! {
+            
             //print(frames?.firstIndex(of: frame)!)
+            
             var trackingRequests = [VNRequest]()
             
             lazy var request: VNTrackingRequest = {

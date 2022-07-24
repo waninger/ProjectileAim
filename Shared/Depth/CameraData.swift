@@ -50,7 +50,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         if(recording == true) {
             if(savedPixelBuffer.isEmpty) {
                 
-                let anchor = frame.anchors.last(where: { $0.name == "boll" })
+                let anchor = frame.anchors.last(where: { $0.name == "mugg" })
                 if(anchor != nil ){
                     let rect = worldToView(frame: frame, anchor: anchor!)
                     if(rect != nil) {
@@ -128,12 +128,14 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
             
             group.notify(queue:.main) { [self] in
                 self.pointsFromTracking = self.trackObject.trackedPoints
+                print("points from tracking added")
             }
             savedPixelBuffer.removeAll()
         }
         
         //reset
         if reset && !recording {
+            print("reseting")
             session.currentFrame?.anchors.forEach{ anchor in
                 if anchor.name == "parabola" || anchor.name == "text"{
                     session.remove(anchor: anchor)
@@ -152,12 +154,12 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         // MARK: anchor management
 
         // om vi har hittat både boll och mål skapa plan
-        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "boll" }) != nil ){
+        if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
             planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
-            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 4)
+            goalPlaneAnchor = createGoalPlaneAnchor(planeAnchor: planeAnchor!, distance: 3.20)
             newAnchors.append(planeAnchor!)
             newAnchors.append(goalPlaneAnchor!)
-            newAnchors.append(frame.anchors.last(where: { $0.name == "boll" })!)
+            newAnchors.append(frame.anchors.last(where: { $0.name == "mugg" })!)
         }
         
         if !pointsFromTracking.isEmpty {
@@ -172,7 +174,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                     self.saveVideo.saveVideo(videoName: "MakeItWork", size: frame.camera.imageResolution)
                 }
                 speeds = calculateSpeed(anchors: filterdPoints.0, timestamps: filterdPoints.1)!
-                currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 4, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
+                currentGoalAnchor = goalPoint(frame: frame, speeds: speeds, distance: 3.2, timestamps: filterdPoints.1, goalPlane: goalPlaneAnchor!, viewPoints: pointsFromTracking)
                 newAnchors.append(contentsOf: filterdPoints.0)
                 newAnchors.append(currentGoalAnchor!)
                 newAnchors.append(createTextAnchor(transform: (filterdPoints.0.first?.transform)!))
@@ -181,9 +183,9 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 var goalList = [Any]()
                 let distanceFromCentergoal = calculateDistance(anchorA: goalPlaneAnchor!, anchorB: currentGoalAnchor!, directional: false)
                 goalList.append(distanceFromCentergoal)
-                fileHandling(list: speeds, fileName: "velocity.txt")
-                fileHandling(list: parabolaValues, fileName: "parabola.txt")
-                fileHandling(list: speeds, fileName: "goal.txt")
+                fileHandling(list: speeds, fileName: "velocityDay1.txt")
+               // fileHandling(list: parabolaValues, fileName: "parabola.txt")
+               // fileHandling(list: speeds, fileName: "goal.txt")
                 
             } else { reset = true }
             pointsFromTracking.removeAll()

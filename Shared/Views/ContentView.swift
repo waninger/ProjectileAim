@@ -37,6 +37,7 @@ import ARKit
 struct RealityKitView: UIViewRepresentable {
     private var worldConfiguration = ARWorldTrackingConfiguration()
     @StateObject var cameraData = CameraData.shared
+
    
 
     func makeUIView(context: Context) -> ARView {
@@ -54,11 +55,12 @@ struct RealityKitView: UIViewRepresentable {
         view.addSubview(coachingOverlay)
         
         session.run(worldConfiguration)
+        
        return view
     }
 
     func updateUIView(_ view: ARView, context: Context) {
-        while cameraData.newAnchors.count > 0{
+        while cameraData.newAnchors.count > 0 {
             let anchor = cameraData.newAnchors.removeFirst()
             view.session.add(anchor: anchor)
             let entity: AnchorEntity

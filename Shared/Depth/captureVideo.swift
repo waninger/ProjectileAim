@@ -85,13 +85,13 @@ class CaptureVideo{
     
                // When the video input is ready for more media data...
                if (self.videoInput?.isReadyForMoreMediaData)!  {
-                   print("processing current frame :: \(currentFrame)");
+                   //print("processing current frame :: \(currentFrame)");
                        // Calc the current frame time
                    currentframeTime = CMTimeAdd(currentframeTime, CMTimeMake(value: 1, timescale: 60)) 
 
                        
-                   print("SECONDS : \(currentframeTime.seconds)")
-                   print("Current frame time :: \(currentframeTime)");
+                   //print("SECONDS : \(currentframeTime.seconds)")
+                   //print("Current frame time :: \(currentframeTime)");
                        
                    self.pixelBufferAdaptor!.append(images[currentFrame], withPresentationTime: currentframeTime)
                        // increment frame
