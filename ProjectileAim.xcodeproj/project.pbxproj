@@ -21,28 +21,8 @@
 		AFAF942227F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFAF942327F3357E002EFFBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFAF93F827F3357E002EFFBA /* Assets.xcassets */; };
 		AFB8C21328475C2B004E3C82 /* captureVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB8C21228475C2B004E3C82 /* captureVideo.swift */; };
-		C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
-		C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82227FD7EFC001D6EDC /* FrameView.swift */; };
-		C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */; };
-		C32CE83527FD7EFC001D6EDC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */; };
 		C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82427FD7EFC001D6EDC /* ContentView.swift */; };
 		C32CE83727FD7EFC001D6EDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82427FD7EFC001D6EDC /* ContentView.swift */; };
-		C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82527FD7EFC001D6EDC /* ControlView.swift */; };
-		C32CE83927FD7EFC001D6EDC /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82527FD7EFC001D6EDC /* ControlView.swift */; };
-		C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82627FD7EFC001D6EDC /* ErrorView.swift */; };
-		C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82627FD7EFC001D6EDC /* ErrorView.swift */; };
-		C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
-		C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */; };
-		C32CE84027FD7EFC001D6EDC /* TrackParabola.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */; };
-		C32CE84127FD7EFC001D6EDC /* TrackParabola.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */; };
-		C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
-		C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82D27FD7EFC001D6EDC /* CameraError.swift */; };
-		C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */; };
-		C32CE84527FD7EFC001D6EDC /* FrameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */; };
-		C32CE84627FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
-		C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */; };
-		C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
-		C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */; };
 		C3A4E8552847641900F1E4E9 /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A4E8542847641900F1E4E9 /* FileHandler.swift */; };
 		C3CB44FC28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
 		C3CB44FD28227AAD00129597 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = C3CB44FB28227AAD00129597 /* data.json */; };
@@ -81,17 +61,7 @@
 		AFAF941A27F3357E002EFFBA /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		AFAF941C27F3357E002EFFBA /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		AFB8C21228475C2B004E3C82 /* captureVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = captureVideo.swift; sourceTree = "<group>"; };
-		C32CE82227FD7EFC001D6EDC /* FrameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
-		C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		C32CE82427FD7EFC001D6EDC /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C32CE82527FD7EFC001D6EDC /* ControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
-		C32CE82627FD7EFC001D6EDC /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
-		C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImageExtension.swift; sourceTree = "<group>"; };
-		C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackParabola.swift; sourceTree = "<group>"; };
-		C32CE82D27FD7EFC001D6EDC /* CameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
-		C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameManager.swift; sourceTree = "<group>"; };
-		C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
-		C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		C3A4E8542847641900F1E4E9 /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 		C3CB44FB28227AAD00129597 /* data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,13 +98,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AF93960227FDD50E0086B95A /* Depth */ = {
+		AF93960227FDD50E0086B95A /* CameraDelegate */ = {
 			isa = PBXGroup;
 			children = (
 				AF93960327FDD5310086B95A /* CameraData.swift */,
 				AFB8C21228475C2B004E3C82 /* captureVideo.swift */,
 			);
-			path = Depth;
+			path = CameraDelegate;
 			sourceTree = "<group>";
 		};
 		AFAF93F027F3357B002EFFBA = {
@@ -152,10 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				C3A4E8532847640500F1E4E9 /* File */,
-				AF93960227FDD50E0086B95A /* Depth */,
-				C32CE82C27FD7EFC001D6EDC /* Camera */,
-				C32CE82827FD7EFC001D6EDC /* Extensions */,
-				C32CE83027FD7EFC001D6EDC /* ViewModels */,
+				AF93960227FDD50E0086B95A /* CameraDelegate */,
 				C32CE82127FD7EFC001D6EDC /* Views */,
 				C32CE82A27FD7EFC001D6EDC /* Vision */,
 				AFAF93F627F3357B002EFFBA /* ProjectileAimApp.swift */,
@@ -205,49 +172,18 @@
 		C32CE82127FD7EFC001D6EDC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C32CE82227FD7EFC001D6EDC /* FrameView.swift */,
-				C32CE82327FD7EFC001D6EDC /* ToggleButton.swift */,
 				C32CE82427FD7EFC001D6EDC /* ContentView.swift */,
-				C32CE82527FD7EFC001D6EDC /* ControlView.swift */,
-				C32CE82627FD7EFC001D6EDC /* ErrorView.swift */,
 				AFA0C1AE2806B240003EB8D7 /* AnchorEntitys.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C32CE82827FD7EFC001D6EDC /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				C32CE82927FD7EFC001D6EDC /* CGImageExtension.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		C32CE82A27FD7EFC001D6EDC /* Vision */ = {
 			isa = PBXGroup;
 			children = (
-				C32CE82B27FD7EFC001D6EDC /* TrackParabola.swift */,
 				AFA0C1AB2806A966003EB8D7 /* TrackObject.swift */,
 			);
 			path = Vision;
-			sourceTree = "<group>";
-		};
-		C32CE82C27FD7EFC001D6EDC /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-				C32CE82D27FD7EFC001D6EDC /* CameraError.swift */,
-				C32CE82E27FD7EFC001D6EDC /* FrameManager.swift */,
-				C32CE82F27FD7EFC001D6EDC /* CameraManager.swift */,
-			);
-			path = Camera;
-			sourceTree = "<group>";
-		};
-		C32CE83027FD7EFC001D6EDC /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				C32CE83127FD7EFC001D6EDC /* ContentViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		C3A4E8532847640500F1E4E9 /* File */ = {
@@ -419,22 +355,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFA0C1AC2806A966003EB8D7 /* TrackObject.swift in Sources */,
-				C32CE83227FD7EFC001D6EDC /* FrameView.swift in Sources */,
-				C32CE84627FD7EFC001D6EDC /* CameraManager.swift in Sources */,
 				AFA0C1AF2806B240003EB8D7 /* AnchorEntitys.swift in Sources */,
-				C32CE84227FD7EFC001D6EDC /* CameraError.swift in Sources */,
-				C32CE84027FD7EFC001D6EDC /* TrackParabola.swift in Sources */,
 				C32CE83627FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				C3A4E8552847641900F1E4E9 /* FileHandler.swift in Sources */,
 				AFAF941E27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
 				AFB8C21328475C2B004E3C82 /* captureVideo.swift in Sources */,
-				C32CE83E27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
-				C32CE84427FD7EFC001D6EDC /* FrameManager.swift in Sources */,
 				AF93960427FDD5310086B95A /* CameraData.swift in Sources */,
-				C32CE83A27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
-				C32CE84827FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
-				C32CE83827FD7EFC001D6EDC /* ControlView.swift in Sources */,
-				C32CE83427FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,19 +368,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C32CE83327FD7EFC001D6EDC /* FrameView.swift in Sources */,
-				C32CE84727FD7EFC001D6EDC /* CameraManager.swift in Sources */,
-				C32CE84327FD7EFC001D6EDC /* CameraError.swift in Sources */,
-				C32CE84127FD7EFC001D6EDC /* TrackParabola.swift in Sources */,
 				C32CE83727FD7EFC001D6EDC /* ContentView.swift in Sources */,
 				AFAF941F27F3357E002EFFBA /* ProjectileAimApp.swift in Sources */,
-				C32CE83F27FD7EFC001D6EDC /* CGImageExtension.swift in Sources */,
 				AFA0C1AD2806A966003EB8D7 /* TrackObject.swift in Sources */,
-				C32CE84527FD7EFC001D6EDC /* FrameManager.swift in Sources */,
-				C32CE83B27FD7EFC001D6EDC /* ErrorView.swift in Sources */,
-				C32CE84927FD7EFC001D6EDC /* ContentViewModel.swift in Sources */,
-				C32CE83927FD7EFC001D6EDC /* ControlView.swift in Sources */,
-				C32CE83527FD7EFC001D6EDC /* ToggleButton.swift in Sources */,
 				AFA0C1B02806B240003EB8D7 /* AnchorEntitys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

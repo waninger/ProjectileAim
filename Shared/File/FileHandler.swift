@@ -60,21 +60,6 @@ class FileHandler {
         
         (newList as NSArray).write(toFile: filePath, atomically: true)
         
- /*       do {
-            if(floatList != nil ) {
-                (floatList! as NSArray).write(toFile: filePath, atomically: false)
-            } else if (stringList != nil) {
-                (stringList! as NSArray).write(toFile: filePath, atomically: false)
-            }
-                             /* string.write(toFile: filePath,
-                                        atomically: true,
-                                        encoding: .utf8)*/
-            
-        } catch {
-            print("Error", error)
-            return
-        }*/
-        
         print("Save successful")
     }
 }

@@ -15,8 +15,7 @@ class CaptureVideo{
     var videoInput:AVAssetWriterInput?;
     var assetWriter:AVAssetWriter?;
     static let shared = CaptureVideo()
-    // skapa en url
-    // writer
+
     public func setBuffer(videoBufferIn: [CVPixelBuffer]){
         videoBuffer = videoBufferIn
     }
@@ -85,14 +84,8 @@ class CaptureVideo{
     
                // When the video input is ready for more media data...
                if (self.videoInput?.isReadyForMoreMediaData)!  {
-                   //print("processing current frame :: \(currentFrame)");
                        // Calc the current frame time
-                   currentframeTime = CMTimeAdd(currentframeTime, CMTimeMake(value: 1, timescale: 60)) 
-
-                       
-                   //print("SECONDS : \(currentframeTime.seconds)")
-                   //print("Current frame time :: \(currentframeTime)");
-                       
+                   currentframeTime = CMTimeAdd(currentframeTime, CMTimeMake(value: 1, timescale: 60))
                    self.pixelBufferAdaptor!.append(images[currentFrame], withPresentationTime: currentframeTime)
                        // increment frame
                        currentFrame += 1;

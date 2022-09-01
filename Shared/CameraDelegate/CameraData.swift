@@ -152,7 +152,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
         
 
         // MARK: anchor management
-
         // om vi har hittat både boll och mål skapa plan
         if(planeAnchor == nil && frame.anchors.last(where: { $0.name == "mugg" }) != nil ){
             planeAnchor = createPlaneAnchor(fromMatrix: frame.anchors.last!.transform, toMatrix: frame.camera.transform)
@@ -184,8 +183,6 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
                 let distanceFromCentergoal = calculateDistance(anchorA: goalPlaneAnchor!, anchorB: currentGoalAnchor!, directional: false)
                 goalList.append(distanceFromCentergoal)
                 fileHandling(list: speeds, fileName: "velocityDay1.txt")
-               // fileHandling(list: parabolaValues, fileName: "parabola.txt")
-               // fileHandling(list: speeds, fileName: "goal.txt")
                 
             } else { reset = true }
             pointsFromTracking.removeAll()
@@ -207,8 +204,7 @@ class CameraData:NSObject, ARSessionDelegate, ObservableObject{
     func fileHandling(list: [Any], fileName: String) {
         
         fileManager.save(list: list,toDirectory: fileManager.documentDirectory(), withFileName: fileName)
-        fileManager.read(fromDocumentsWithFileName: fileName)
-        
+        fileManager.read(fromDocumentsWithFileName: fileName)        
     }
     
     //MARK: World setup and anchors

@@ -37,9 +37,6 @@ class TrackObject {
         print(frames?.count)
         
         for frame in frames! {
-            
-            //print(frames?.firstIndex(of: frame)!)
-            
             var trackingRequests = [VNRequest]()
             
             lazy var request: VNTrackingRequest = {
@@ -57,7 +54,6 @@ class TrackObject {
             
             var result = trackingRequests.first?.results as? [VNDetectedObjectObservation]
             if result != nil {
-                //print(result!.first)
                 let point = CGPoint(x: (result?.first?.boundingBox.midX)!, y: (result?.first?.boundingBox.midY)!)
                 inputObservations = (result?.first)!
                 trackedPoints.append(point)
